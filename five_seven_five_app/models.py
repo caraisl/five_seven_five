@@ -18,7 +18,7 @@ class Profile(models.Model):
         return self.username
 
 class Haiku(models.Model):
-    username = models.ForeignKey(HaikuUser)
+    username = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
     haiku = models.CharField(max_length=1000)
     created_at = models.DateField()
 
@@ -27,7 +27,7 @@ class Haiku(models.Model):
 
 
 class Comment(models.Model):
-    username = models.ForeignKey(HaikuUser)
+    username = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
     haiku = models.ForeignKey(Haiku)
     comment_text =  models.CharField(max_length=100)
     created_at = models.DateField()
@@ -37,7 +37,7 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    username = models.ForeignKey(HaikuUser)
+    username = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
     haiku = models.ForeignKey(Haiku)
     created_at = models.DateField()
 
@@ -46,8 +46,8 @@ class Like(models.Model):
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(HaikuUser)
-    following = models.ForeignKey(HaikuUser)
+    follower = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
+    following = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
     created_at = models.DateField()
 
     def __str__(self):
