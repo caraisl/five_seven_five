@@ -28,7 +28,7 @@ class Haiku(models.Model):
 
 class Comment(models.Model):
     username = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
-    haiku = models.ForeignKey(Haiku)
+    haiku = models.ForeignKey(Haiku,  on_delete=models.CASCADE)
     comment_text =  models.CharField(max_length=100)
     created_at = models.DateField()
 
@@ -38,7 +38,7 @@ class Comment(models.Model):
 
 class Like(models.Model):
     username = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
-    haiku = models.ForeignKey(Haiku)
+    haiku = models.ForeignKey(Haiku,  on_delete=models.CASCADE)
     created_at = models.DateField()
 
     def __str__(self):
@@ -46,8 +46,8 @@ class Like(models.Model):
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
-    following = models.ForeignKey(HaikuUser, on_delete=models.CASCADE)
+    follower = models.ForeignKey(HaikuUser, on_delete=models.CASCADE, related_name="following" )
+    following = models.ForeignKey(HaikuUser, on_delete=models.CASCADE,related_name="followed_by" )
     created_at = models.DateField()
 
     def __str__(self):
