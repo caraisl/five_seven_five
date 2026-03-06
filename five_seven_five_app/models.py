@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.config import settings
+
 
 # Create your models here.
 class HaikuUser(models.Model):
@@ -12,7 +14,7 @@ class HaikuUser(models.Model):
 class Profile(models.Model):
     username = models.OneToOneField(HaikuUser, on_delete=models.CASCADE, primary_key=True)
     bio = models.CharField(max_length=100)
-    profile_picture = models.ImageField()
+    profile_picture = models.ImageField(upload_to=settings.MEDIA_ROOT)
 
     def __str__(self):
         return self.username
