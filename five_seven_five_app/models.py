@@ -13,7 +13,7 @@ class Profile(models.Model):
         return str(self.username)
 
 class Haiku(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.ForeignKey(Profile, on_delete=models.CASCADE)
     haiku = models.CharField(max_length=1000)
     created_at = models.DateField()
 

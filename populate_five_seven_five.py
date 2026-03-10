@@ -53,7 +53,7 @@ def populate():
 
     for haiku in haikus:
         print(haiku)
-        newHaiku = Haiku.objects.get_or_create(username=User.objects.get(username=haiku['username']), haiku=haiku['haiku'], created_at = haiku.get('created', datetime.now()))[0]
+        newHaiku = Haiku.objects.get_or_create(username=Profile.objects.get(username__username=haiku['username']), haiku=haiku['haiku'], created_at = haiku.get('created', datetime.now()))[0]
         newHaiku.save()
         for comment in haiku.get("comments", []):
             haikuComment = Comment.objects.get_or_create(username=User.objects.get(username=comment), haiku=newHaiku, comment_text = haiku['comments'][comment], created_at = datetime.now())[0]
