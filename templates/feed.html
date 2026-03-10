@@ -12,9 +12,12 @@
     {% endblock %}
 
     {% if haikus %}
-    {% for i , haiku in enumerate( haikus ) %}
+    {% for haiku in haikus%}
     <h1>{{haiku.username}}</h1>
+    <img src="media/{{haiku.username.profile_picture}}"/>
     <p>{{haiku.haiku}}</p>
+    <p>{{haiku.username.profile_picture}}</p>
+    
 
     {% endfor %}
     {% endif %}
