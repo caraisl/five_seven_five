@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load rango_template_tags %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8"/>
+        <title>Five Seven Five 
+            {% block title_block %}
+                The Home of Haikus!
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div id="navbar">
+            <ul>
+                <li><a href="{url 'five_seven_five_app:index'}">Home</a></li>
+                <li><a href="{url 'five_seven_five_app:likes'}">Likes</a></li>
+                <li><a href="{url 'five_seven_five_app:following'}">Following</a></li>
+                <li>
+                    <form method="get">
+                        <input type="text" placeholder="Search.."/>
+                        <button type="submit">Search</button>
+                    </form>
+                </li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'five_seven_five_app:logout' %}">Logout</a></li>
+                    <li><a href="{% url 'rango:profile' %}">Profile</a></li>
+                {% else %}
+                <li><a href="{% url 'five_seven_five_app:register' %}">Sign Up</a></li>
+                <li><a href="{% url 'five_seven_five_app:login' %}">Login</a></li>
+                {% endif %}   
+            </ul>
+
+        </div>
+
+        <div>
+        {% block body_block %}
+            This is body_block's default content.
+        {% endblock %}
+        </div>
+   
+        </div>
+    </body>
+</html>
