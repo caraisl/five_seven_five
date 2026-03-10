@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
-from .models import Haiku, HaikuUser, Profile, Comment, Like, Follow
+from .models import Haiku, Profile, Comment, Like, Follow
 
 
 def index(request):
@@ -20,7 +20,7 @@ def haiku_detail(request, haiku_id):
 
 
 def profile(request, username):
-    user = get_object_or_404(HaikuUser, user__username=username)
+    user = get_object_or_404(Profile, user__username=username)
 
     haikus = Haiku.objects.filter(username=user)
 
@@ -36,7 +36,7 @@ def liked_haikus(request):
     if not request.user.is_authenticated:
         return render(request, 'login_required.html')
 
-    user = HaikuUser.objects.get(user=request.user)
+    user = Profile.objects.get(user=request.user)
 
     liked = Like.objects.filter(username=user)
 
@@ -49,7 +49,7 @@ def following_feed(request):
     if not request.user.is_authenticated:
         return render(request, 'login_required.html')
 
-    user = HaikuUser.objects.get(user=request.user)
+    user = Profile.objects.get(user=request.user)
 
     following = Follow.objects.filter(follower=user)
 

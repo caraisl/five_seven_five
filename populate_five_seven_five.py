@@ -6,7 +6,7 @@ import django
 django.setup()
 from django.core.files import File 
 
-from five_seven_five_app.models import Haiku, HaikuUser, Profile, Comment, Like, Follow, User
+from five_seven_five_app.models import Haiku, Profile, Comment, Like, Follow, User
 
 def populate():
     users = [
@@ -39,18 +39,17 @@ def populate():
     follows = {"StanielTheAntiFares":["xxep1cF4res123xx", "myFlatmateHolly", "haikuHater666"], "myFlatmateHolly": ["IheartHaikus","Dave67"]}
     
     for user in users:
-        newUser = User.objects.get_or_create(username=user['username'], password=user['password'])[0]
+        print(user)
+        newUser, created = User.objects.get_or_create(username=user['username'], password=user['password'])
+        print(created)
         newUser.save()
 
-        newHaikuUser = HaikuUser.objects.get_or_create(user=newUser,created_at=user['created'])[0]
-        newHaikuUser.save()
-        """
+
         with open("populate_pics/" + user.get('profile_pic','default_pic.png'), 'rb') as f:
             profile_pic = File(f)
-            print(HaikuUser.user_id)
-            newProfile = Profile.objects.get_or_create(username=newHaikuUser, profile_picture =  profile_pic, bio = user.get('bio', 'I like Haikus'))[0]
+            newProfile = Profile.objects.get_or_create(username=newUser, profile_picture =  profile_pic, bio = user.get('bio', 'I like Haikus'), created_at = user['created'])[0]
             newProfile.save()
-        """
+
         
 
     for haiku in haikus:
@@ -58,7 +57,7 @@ def populate():
         newHaiku = Haiku.objects.get_or_create(username=User.objects.get(username=haiku['username']), haiku=haiku['haiku'], created_at = haiku.get('created', datetime.now()))[0]
         newHaiku.save()
         for comment in haiku.get("comment", []):
-            haikuComment = Comment.objects.get_or_create(username=User.objects.get_by_natural_key(comment), haiku=newHaiku, comment_text = haiku['comment'][comment], created_at = datetime.now())[0]
+            haikuComment = Comment.objects.get_or_create(username=User.objects.get(username=comment), haiku=newHaiku, comment_text = haiku['comment'][comment], created_at = datetime.now())[0]
             haikuComment.save()
         for like in haiku.get('likes', []):
             newLike = Like.objects.get_or_create(username=User.objects.get(username = like), haiku= newHaiku, created_at=datetime.now())[0]

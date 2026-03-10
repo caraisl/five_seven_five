@@ -3,18 +3,11 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 
-# Create your models here.
-class HaikuUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    created_at = models.DateField()
-
-    def __str__(self):
-        return self.user.username
-
 class Profile(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     bio = models.CharField(max_length=100)
     profile_picture = models.ImageField(upload_to=settings.MEDIA_ROOT)
+    created_at = models.DateField()
 
     def __str__(self):
         return str(self.username)
