@@ -41,14 +41,13 @@ def populate():
     for user in users:
         print(user)
         newUser, created = User.objects.get_or_create(username=user['username'], password=user['password'])
-        print(created)
         newUser.save()
 
-
-        with open("populate_pics/" + user.get('profile_pic','default_pic.png'), 'rb') as f:
-            profile_pic = File(f)
-            newProfile = Profile.objects.get_or_create(username=newUser, profile_picture =  profile_pic, bio = user.get('bio', 'I like Haikus'), created_at = user['created'])[0]
-            newProfile.save()
+        if created:
+            with open("populate_pics/" + user.get('profile_pic','default_pic.png'), 'rb') as f:
+                profile_pic = File(f)
+                newProfile = Profile.objects.get_or_create(username=newUser, profile_picture =  profile_pic, bio = user.get('bio', 'I like Haikus'), created_at = user['created'])[0]
+                newProfile.save()
 
         
 
@@ -56,8 +55,8 @@ def populate():
         print(haiku)
         newHaiku = Haiku.objects.get_or_create(username=User.objects.get(username=haiku['username']), haiku=haiku['haiku'], created_at = haiku.get('created', datetime.now()))[0]
         newHaiku.save()
-        for comment in haiku.get("comment", []):
-            haikuComment = Comment.objects.get_or_create(username=User.objects.get(username=comment), haiku=newHaiku, comment_text = haiku['comment'][comment], created_at = datetime.now())[0]
+        for comment in haiku.get("comments", []):
+            haikuComment = Comment.objects.get_or_create(username=User.objects.get(username=comment), haiku=newHaiku, comment_text = haiku['comments'][comment], created_at = datetime.now())[0]
             haikuComment.save()
         for like in haiku.get('likes', []):
             newLike = Like.objects.get_or_create(username=User.objects.get(username = like), haiku= newHaiku, created_at=datetime.now())[0]
