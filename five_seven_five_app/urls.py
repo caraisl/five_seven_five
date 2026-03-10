@@ -3,6 +3,8 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = "five_seven_five_app"
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('haiku/<int:haiku_id>/', views.haiku_detail, name='haiku_detail'),
