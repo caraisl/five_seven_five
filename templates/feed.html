@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% load staticfiles %}
+
+{% block title_block %}
+
+{% endblock %}
+
+{% block body_block %}
+
+    {% block feed_desc %}
+
+    {% endblock %}
+
+    {% if haikus %}
+    {% for i , haiku in enumerate( haikus ) %}
+    <h1>{{haiku.username}}</h1>
+    <p>{{haiku.haiku}}</p>
+
+    {% endfor %}
+    {% endif %}
+{% endblock %}
