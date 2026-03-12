@@ -40,7 +40,8 @@ def populate():
     
     for user in users:
         print(user)
-        newUser, created = User.objects.get_or_create(username=user['username'], password=user['password'])
+        newUser, created = User.objects.get_or_create(username=user['username'])
+        newUser.set_password(user['password'])
         newUser.save()
 
         if created:
