@@ -6,7 +6,8 @@ from .models import Haiku, Profile, Comment, Like, Follow
 
 def index(request):
     haikus = Haiku.objects.all().order_by('-created_at')
-    return render(request, 'index.html', {'haikus': haikus})
+    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
+    return render(request, 'index.html', {'haikus': haikus, 'profiles':profiles})
 
 
 def haiku_detail(request, haiku_id):
@@ -20,7 +21,7 @@ def haiku_detail(request, haiku_id):
 
 
 def profile(request, username):
-    user = get_object_or_404(Profile, user__username=username)
+    user = get_object_or_404(Profile, username__username=username)
 
     haikus = Haiku.objects.filter(username=user)
 
