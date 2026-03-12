@@ -32,9 +32,14 @@ def profile(request, username):
 
     profile = Profile.objects.get(username=user)
 
+    
+    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
+
     return render(request, 'profile.html', {
         'profile': profile,
-        'haikus': haikus
+        'haikus': haikus,
+        'profiles':profiles
+
     })
 
 
