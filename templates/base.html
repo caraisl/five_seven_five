@@ -17,7 +17,7 @@
                 <li><a href="{% url 'five_seven_five_app:liked' %}">Likes</a></li>
                 <li><a href="{% url 'five_seven_five_app:following' %}">Following</a></li>
                 <li>
-                    <form method="get">
+                    <form method="get" action="/search/">
                         <input type="text" name="q" value="{{ query }}" placeholder="Search.."/>
                         <button type="submit">Search</button>
                     </form>
