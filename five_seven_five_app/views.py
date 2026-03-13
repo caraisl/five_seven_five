@@ -46,12 +46,14 @@ def profile(request, username):
 def liked_haikus(request):
     if not request.user.is_authenticated:
         return render(request, 'login_required.html')
+    print(type(request.user))
 
-    user = Profile.objects.get(user=request.user)
+    user = Profile.objects.get(username=request.user)
 
     liked = Like.objects.filter(username=user)
 
     haikus = [like.haiku for like in liked]
+    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
 
     return render(request, 'liked.html', {'haikus': haikus})
 
