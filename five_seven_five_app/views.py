@@ -123,3 +123,32 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('five_seven_five_app:index')
+
+def search(request):
+    query = request.GET.get('q', '')
+    search_type = request.GET.get('type', 'all') # Default to 'all'
+    
+    haiku_qs = Haiku.objects.filter(haiku__icontains=query) if query else Haiku.objects.none()
+    user_qs = Profile.objects.filter(username__username__icontains=query) if query else Profile.objects.none()
+
+    context_dict = {
+        'query': query,
+        'search_type': search_type,
+        'haiku_count': haiku_qs.count(),
+        'user_count': user_qs.count(),
+    }
+
+    if search_type == 'haiku':
+        # Show only haiku
+        context_dict['haiku_results'] = haiku_qs
+        context_dict['user_results'] = []
+    elif search_type == 'user':
+        # View only users
+        context_dict['haiku_results'] = []
+        context_dict['user_results'] = user_qs
+    else:
+        # Display the first few (Wireframe concept)
+        context_dict['haiku_results'] = haiku_qs[:3]
+        context_dict['user_results'] = user_qs[:3]
+
+    return render(request, 'search_results.html', context_dict)
