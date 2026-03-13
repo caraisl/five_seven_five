@@ -14,10 +14,10 @@
     {% if haikus %}
     {% for haiku in haikus%}
     <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
-    <p>{{ MEDIA_URL }}</p>
     <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}"/>
     <p>{{haiku.haiku}}</p>
-    <p>{{haiku.username.profile_picture}}</p>
+    <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
+ 
     
 
     {% endfor %}
