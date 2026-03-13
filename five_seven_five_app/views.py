@@ -6,7 +6,7 @@ from .forms import UserForm, ProfileForm
 import datetime
 # Create your views here.
 
-from .models import Haiku, Profile, Comment, Like, Follow
+from .models import Haiku, Profile, Comment, Like, Follow, User
 
 
 def index(request):
@@ -46,9 +46,8 @@ def profile(request, username):
 def liked_haikus(request):
     if not request.user.is_authenticated:
         return render(request, 'login_required.html')
-    print(type(request.user))
 
-    user = Profile.objects.get(username=request.user)
+    user = User.objects.get(username=request.user)
 
     liked = Like.objects.filter(username=user)
 
@@ -62,15 +61,17 @@ def following_feed(request):
     if not request.user.is_authenticated:
         return render(request, 'login_required.html')
 
-    user = Profile.objects.get(user=request.user)
+    user = User.objects.get(username=request.user)
+    userProfile = Profile.objects.get(username=request.user)
 
     following = Follow.objects.filter(follower=user)
 
     users = [f.following for f in following]
 
-    haikus = Haiku.objects.filter(username__in=users)
+    haikus = Haiku.objects.filter(username__username__in=users)
+    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
 
-    return render(request, 'following.html', {'haikus': haikus})
+    return render(request, 'following.html', {'haikus': haikus,'profiles':profile})
 
 def register(request):
     registered = False
