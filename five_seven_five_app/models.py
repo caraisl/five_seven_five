@@ -16,6 +16,7 @@ class Haiku(models.Model):
     username = models.ForeignKey(Profile, on_delete=models.CASCADE)
     haiku = models.CharField(max_length=1000)
     created_at = models.DateField()
+    haiku_picture = models.ImageField(upload_to=settings.MEDIA_ROOT)
 
     def __str__(self):
         return self.haiku
