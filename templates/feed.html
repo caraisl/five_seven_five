@@ -10,17 +10,21 @@
     {% block feed_desc %}
 
     {% endblock %}
+    <div id="feedContainer">
 
     {% if haikus %}
     {% for haiku in haikus%}
+    <div class="haikuCard">
+    <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}" class="profileImg"/>
     <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
-    <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}"/>
     <p>{{haiku.haiku}}</p>
     {% if haiku.haiku_picture %}
     <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
     {% endif %}
+    </div>
     
 
     {% endfor %}
+    </div>
     {% endif %}
 {% endblock %}
