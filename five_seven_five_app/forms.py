@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Haiku
 import datetime
 
 # A form for handling basic User data 
@@ -16,3 +16,8 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('bio', 'profile_picture',)
+
+class HaikuForm(forms.ModelForm):
+    class Meta:
+        model = Haiku
+        fields = ('haiku', 'haiku_picture',)

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, HaikuForm
 import datetime
 from django.utils import timezone
 # Create your views here.
@@ -175,3 +175,21 @@ def add_comment(request, haiku_id):
             )
 
     return redirect('five_seven_five_app:haiku_detail', haiku_id=haiku_id)
+
+
+@login_required
+def add_haiku(request):
+    user_profile = get_object_or_404(Profile, username=request.user)
+
+    if request.method == 'POST':
+        form = HaikuForm(request.POST, request.FILES)
+        if form.is_valid():
+            haiku = form.save(commit=False)
+            haiku.username = user_profile
+            haiku.created_at = datetime.date.today()
+            haiku.save()
+            return redirect('five_seven_five_app:index')
+    else:
+        form = HaikuForm()
+
+    return render(request, 'add_haiku.html', {'form': form})
