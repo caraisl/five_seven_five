@@ -1,0 +1,26 @@
+{% extends 'base.html' %} 
+{% load staticfiles %}
+
+{% block title_block %}
+
+{% endblock %}
+
+{% block body_block %}
+
+    {% block feed_desc %}
+
+    {% endblock %}
+
+    {% if haikus %}
+    {% for haiku in haikus%}
+    <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
+    <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}"/>
+    <p>{{haiku.haiku}}</p>
+    {% if haiku.haiku_picture %}
+    <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
+    {% endif %}
+    
+
+    {% endfor %}
+    {% endif %}
+{% endblock %}
