@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 
 <html>
     <head lang="en">
@@ -19,14 +19,21 @@
                 <li><a href="{% url 'five_seven_five_app:following' %}">Following</a></li>
                 <li>
                     <form method="get" action="/search/">
+                        {% if query %}
                         <input type="text" name="q" value="{{ query }}" placeholder="Search.."/>
+                        {% else %}
+                        <input type="text" name="q" placeholder="Search.."/>
+                        {% endif %}
                         <button type="submit">Search</button>
                     </form>
                 </li>
             
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'five_seven_five_app:logout' %}">Logout</a></li>
+                    <p>{{user.username}}</p>
+                    {% comment %}
                     <li><a href="{% url 'five_seven_five_app:profile' user.username %}">Profile</a></li>
+                    {% endcomment %}
                 {% else %}
                     <li><a href="{% url 'five_seven_five_app:register' %}">Sign Up</a></li>
                     <li><a href="{% url 'five_seven_five_app:login' %}">Login</a></li>
