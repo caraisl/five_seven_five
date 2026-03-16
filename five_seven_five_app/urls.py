@@ -15,4 +15,5 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('search/', views.search, name='search'),
+    path('haiku/<int:haiku_id>/comment/', views.add_comment, name='add_comment'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .forms import UserForm, ProfileForm
 import datetime
+from django.utils import timezone
 # Create your views here.
 
 from .models import Haiku, Profile, Comment, Like, Follow, User
@@ -71,7 +72,7 @@ def following_feed(request):
     haikus = Haiku.objects.filter(username__username__in=users)
     profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
 
-    return render(request, 'following.html', {'haikus': haikus,'profiles':profile})
+    return render(request, 'following.html', {'haikus': haikus, 'profiles': profiles})
 
 def register(request):
     registered = False
@@ -155,3 +156,22 @@ def search(request):
         context_dict['user_results'] = user_qs[:3]
 
     return render(request, 'search_results.html', context_dict)
+
+    
+
+@login_required
+def add_comment(request, haiku_id):
+    haiku = get_object_or_404(Haiku, id=haiku_id)
+
+    if request.method == "POST":
+        comment_text = request.POST.get("comment_text")
+
+        if comment_text:
+            Comment.objects.create(
+                username=request.user,
+                haiku=haiku,
+                comment_text=comment_text,
+                created_at=timezone.now().date()
+            )
+
+    return redirect('five_seven_five_app:haiku_detail', haiku_id=haiku_id)

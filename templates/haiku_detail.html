@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Haiku Detail
+{% endblock %}
+
+{% block body_block %}
+
+    <h1>{{ haiku.username }}</h1>
+
+    {% if haiku.username.profile_picture %}
+        <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" alt="profile picture" width="100">
+    {% endif %}
+
+    <p>{{ haiku.haiku }}</p>
+
+    {% if haiku.haiku_picture %}
+        <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="haiku image" width="300">
+    {% endif %}
+
+    <p>Created at: {{ haiku.created_at }}</p>
+
+    <hr>
+
+    <h2>Comments</h2>
+
+    {% if comments %}
+        {% for comment in comments %}
+            <p>
+                <strong>{{ comment.username.username }}</strong>:
+                {{ comment.comment_text }}
+                <br>
+                <small>{{ comment.created_at }}</small>
+            </p>
+        {% endfor %}
+    {% else %}
+        <p>No comments yet.</p>
+    {% endif %}
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        <h3>Add a comment</h3>
+        <form method="post" action="{% url 'five_seven_five_app:add_comment' haiku.id %}">
+            {% csrf_token %}
+            <input type="text" name="comment_text" placeholder="Write a comment" maxlength="100" required>
+            <button type="submit">Post Comment</button>
+        </form>
+    {% else %}
+        <p>Please <a href="{% url 'five_seven_five_app:login' %}">log in</a> to comment.</p>
+    {% endif %}
+
+{% endblock %}
