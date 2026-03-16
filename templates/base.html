@@ -30,10 +30,9 @@
             
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'five_seven_five_app:logout' %}">Logout</a></li>
-                    <p>{{user.username}}</p>
-                    {% comment %}
+
                     <li><a href="{% url 'five_seven_five_app:profile' user.username %}">Profile</a></li>
-                    {% endcomment %}
+        
                 {% else %}
                     <li><a href="{% url 'five_seven_five_app:register' %}">Sign Up</a></li>
                     <li><a href="{% url 'five_seven_five_app:login' %}">Login</a></li>

@@ -155,3 +155,7 @@ def search(request):
         context_dict['user_results'] = user_qs[:3]
 
     return render(request, 'search_results.html', context_dict)
+
+@login_required
+def post_haiku(request):
+    return 1

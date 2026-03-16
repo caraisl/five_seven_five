@@ -15,9 +15,11 @@
     {% if haikus %}
     {% for haiku in haikus%}
     <div class="haikuCard">
-    <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}" class="profileImg"/>
-    <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
-    <p><pre>{{haiku.haiku}}</pre></p>
+        <div class="usernameCont">
+        <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}" class="profileImg"/>
+        <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
+        </div>
+    <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{haiku.haiku}}</a></pre>
     {% if haiku.haiku_picture %}
     <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
     {% endif %}
@@ -29,6 +31,6 @@
     {% endif %}
 
     {% if user.is_authenticated %}
-        <a id="postButton" href="{% url 'five_seven_five_app:profile' haiku.username %}">Post</a>
+        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku'%}">Post</a>
     {% endif %}
 {% endblock %}
