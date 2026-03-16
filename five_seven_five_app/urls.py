@@ -7,6 +7,7 @@ app_name = "five_seven_five_app"
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('haiku/add/', views.add_haiku, name='add_haiku'),
     path('haiku/<int:haiku_id>/', views.haiku_detail, name='haiku_detail'),
     path('profile/<str:username>/', views.profile, name='profile'),
     path('liked/', views.liked_haikus, name='liked'),
@@ -15,5 +16,6 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('search/', views.search, name='search'),
-    path('post/', views.post_haiku, name="post_haiku")
+    path('post/', views.post_haiku, name="post_haiku"),
+    path('haiku/<int:haiku_id>/comment/', views.add_comment, name='add_comment'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

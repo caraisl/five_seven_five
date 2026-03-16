@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, HaikuForm
 import datetime
+from django.utils import timezone
 # Create your views here.
 
 from .models import Haiku, Profile, Comment, Like, Follow, User
@@ -71,7 +72,7 @@ def following_feed(request):
     haikus = Haiku.objects.filter(username__username__in=users)
     profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
 
-    return render(request, 'following.html', {'haikus': haikus,'profiles':profile})
+    return render(request, 'following.html', {'haikus': haikus, 'profiles': profiles})
 
 def register(request):
     registered = False
@@ -156,6 +157,39 @@ def search(request):
 
     return render(request, 'search_results.html', context_dict)
 
+    
+
 @login_required
-def post_haiku(request):
-    return 1
+def add_comment(request, haiku_id):
+    haiku = get_object_or_404(Haiku, id=haiku_id)
+
+    if request.method == "POST":
+        comment_text = request.POST.get("comment_text")
+
+        if comment_text:
+            Comment.objects.create(
+                username=request.user,
+                haiku=haiku,
+                comment_text=comment_text,
+                created_at=timezone.now().date()
+            )
+
+    return redirect('five_seven_five_app:haiku_detail', haiku_id=haiku_id)
+
+
+@login_required
+def add_haiku(request):
+    user_profile = get_object_or_404(Profile, username=request.user)
+
+    if request.method == 'POST':
+        form = HaikuForm(request.POST, request.FILES)
+        if form.is_valid():
+            haiku = form.save(commit=False)
+            haiku.username = user_profile
+            haiku.created_at = datetime.date.today()
+            haiku.save()
+            return redirect('five_seven_five_app:index')
+    else:
+        form = HaikuForm()
+
+    return render(request, 'add_haiku.html', {'form': form})

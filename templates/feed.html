@@ -21,7 +21,7 @@
         </div>
     <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{haiku.haiku}}</a></pre>
     {% if haiku.haiku_picture %}
-    <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
+        <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
     {% endif %}
     </div>
     

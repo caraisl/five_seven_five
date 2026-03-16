@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+Post a Haiku
+{% endblock %}
+
+{% block body_block %}
+    <h1>Post a New Haiku</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post Haiku</button>
+    </form>
+{% endblock %}
