@@ -12,8 +12,20 @@ from .models import Haiku, Profile, Comment, Like, Follow, User
 
 def index(request):
     haikus = Haiku.objects.all().order_by('-created_at')
-    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
-    return render(request, 'index.html', {'haikus': haikus, 'profiles':profiles})
+
+    for haiku in haikus:
+        haiku.like_count = Like.objects.filter(haiku=haiku).count()
+        if request.user.is_authenticated:
+            haiku.is_liked = Like.objects.filter(
+                haiku=haiku,
+                username=request.user
+            ).exists()
+        else:
+            haiku.is_liked = False
+
+    profiles = [Profile.objects.get(username=haiku.username) for haiku in haikus]
+
+    return render(request, 'index.html', {'haikus': haikus, 'profiles': profiles})
 
 
 def haiku_detail(request, haiku_id):
