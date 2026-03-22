@@ -18,6 +18,8 @@ class ProfileForm(forms.ModelForm):
         fields = ('bio', 'profile_picture',)
 
 class HaikuForm(forms.ModelForm):
+    haiku = forms.CharField(widget=forms.Textarea(attrs={'style': "display:block;"}))
+
     class Meta:
         model = Haiku
         fields = ('haiku', 'haiku_picture',)
