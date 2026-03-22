@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from .forms import UserForm, ProfileForm, HaikuForm
 import datetime
 from django.utils import timezone
+from django.http import HttpResponse, JsonResponse
 # Create your views here.
 
 from .models import Haiku, Profile, Comment, Like, Follow, User
@@ -193,3 +193,30 @@ def add_haiku(request):
         form = HaikuForm()
 
     return render(request, 'add_haiku.html', {'form': form})
+
+@login_required
+def toggle_like(request, haiku_id):
+    if request.method != "POST":
+        return HttpResponse(status=400)
+
+    haiku = get_object_or_404(Haiku, id=haiku_id)
+
+    like = Like.objects.filter(username=request.user, haiku=haiku).first()
+
+    if like:
+        like.delete()
+        liked = False
+    else:
+        Like.objects.create(
+            username=request.user,
+            haiku=haiku,
+            created_at=timezone.now().date()
+        )
+        liked = True
+
+    like_count = Like.objects.filter(haiku=haiku).count()
+
+    return JsonResponse({
+        "liked": liked,
+        "like_count": like_count
+    })
