@@ -55,7 +55,6 @@ body {
     border-radius: 1.5em;
     text-decoration: none;
     color:black;
-    position: relative;
     width:fit-content;
 }
 
@@ -75,9 +74,15 @@ body {
 }
 
 .haikuCard h1{
-    position: absolute;
-    top:0.3em;
-    left:2em;
+    margin-right: 1em;
+}
+
+.haikuCard pre{
+    margin: 1em;
+}
+
+.usernameCont{
+    display: flex;
 }
 
 #feedContainer{
@@ -85,8 +90,8 @@ body {
     flex-wrap: wrap;
 }
 
-p, h1{
-    margin:8px;
+#mainContent{
+    padding-left:8px;
 }
 
 #postButton{
