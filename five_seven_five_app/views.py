@@ -190,7 +190,7 @@ def add_comment(request, haiku_id):
 
 
 @login_required
-def add_haiku(request):
+def post_haiku(request):
     user_profile = get_object_or_404(Profile, username=request.user)
 
     if request.method == 'POST':
@@ -204,7 +204,7 @@ def add_haiku(request):
     else:
         form = HaikuForm()
 
-    return render(request, 'add_haiku.html', {'form': form})
+    return render(request, 'post_haiku.html', {'form': form})
 
 @login_required
 def toggle_like(request, haiku_id):
