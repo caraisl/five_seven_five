@@ -20,6 +20,19 @@
         <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
         </div>
     <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{haiku.haiku}}</a></pre>
+
+    <button class="like-btn" data-haiku-id="{{ haiku.id }}">
+        {% if haiku.is_liked %}
+            Unlike
+        {% else %}
+            Like
+        {% endif %}
+    </button>
+
+    <span id="like-count-{{ haiku.id }}">
+        {{ haiku.like_count|default:0 }}
+    </span>
+    
     {% if haiku.haiku_picture %}
         <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
     {% endif %}
