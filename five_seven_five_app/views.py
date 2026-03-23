@@ -5,6 +5,7 @@ from .forms import UserForm, ProfileForm, HaikuForm
 import datetime
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
+import syllables
 # Create your views here.
 
 from .models import Haiku, Profile, Comment, Like, Follow, User
@@ -13,8 +14,15 @@ from .models import Haiku, Profile, Comment, Like, Follow, User
 def index(request):
     haikus = Haiku.objects.all().order_by('-created_at')
 
+    context = feed(request, haikus)
+
+    return render(request, 'index.html', context)
+
+def feed(request, haikus):
+    context = {}
     for haiku in haikus:
         haiku.like_count = Like.objects.filter(haiku=haiku).count()
+        haiku.comment_count = Comment.objects.filter(haiku=haiku).count()
         if request.user.is_authenticated:
             haiku.is_liked = Like.objects.filter(
                 haiku=haiku,
@@ -22,10 +30,11 @@ def index(request):
             ).exists()
         else:
             haiku.is_liked = False
+    context['haikus'] = haikus
+    return context
 
-    profiles = [Profile.objects.get(username=haiku.username) for haiku in haikus]
+    
 
-    return render(request, 'index.html', {'haikus': haikus, 'profiles': profiles})
 
 
 def haiku_detail(request, haiku_id):
@@ -40,20 +49,16 @@ def haiku_detail(request, haiku_id):
 
 def profile(request, username):
     user = get_object_or_404(Profile, username__username=username)
-
-    haikus = Haiku.objects.filter(username=user)
-
     profile = Profile.objects.get(username=user)
+    haikus = Haiku.objects.filter(username=user)
+    context = feed(request, haikus)
+    context['profile'] = profile;
 
     
-    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
 
-    return render(request, 'profile.html', {
-        'profile': profile,
-        'haikus': haikus,
-        'profiles':profiles
 
-    })
+
+    return render(request, 'profile.html', context)
 
 
 def liked_haikus(request):
@@ -65,9 +70,10 @@ def liked_haikus(request):
     liked = Like.objects.filter(username=user)
 
     haikus = [like.haiku for like in liked]
-    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
+    context = feed(request, haikus)
+    
 
-    return render(request, 'liked.html', {'haikus': haikus})
+    return render(request, 'liked.html', context)
 
 
 def following_feed(request):
@@ -75,16 +81,15 @@ def following_feed(request):
         return render(request, 'login_required.html')
 
     user = User.objects.get(username=request.user)
-    userProfile = Profile.objects.get(username=request.user)
 
     following = Follow.objects.filter(follower=user)
 
     users = [f.following for f in following]
 
     haikus = Haiku.objects.filter(username__username__in=users)
-    profiles = [Profile.objects.get(username = haiku.username) for haiku in haikus]
+    context = feed(request, haikus)
 
-    return render(request, 'following.html', {'haikus': haikus, 'profiles': profiles})
+    return render(request, 'following.html', context)
 
 def register(request):
     registered = False
@@ -199,12 +204,19 @@ def post_haiku(request):
             haiku = form.save(commit=False)
             haiku.username = user_profile
             haiku.created_at = datetime.date.today()
-            haiku.save()
-            return redirect('five_seven_five_app:index')
+            if validate_haiku(haiku.haiku_text):
+                haiku.save()
+                return redirect('five_seven_five_app:index')
+            else:
+                return JsonResponse({"error": "not a valid haiku."}, status=400)
     else:
         form = HaikuForm()
 
     return render(request, 'post_haiku.html', {'form': form})
+
+def validate_haiku(haiku):
+    syllable_count = [syllables.estimate(line) for line in haiku.split("\n")]
+    return syllable_count == [5,7,5]
 
 @login_required
 def toggle_like(request, haiku_id):
