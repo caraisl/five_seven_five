@@ -63,7 +63,7 @@ def profile(request, username):
 
 def liked_haikus(request):
     if not request.user.is_authenticated:
-        return render(request, 'login_required.html')
+        return redirect('five_seven_five_app:login')
 
     user = User.objects.get(username=request.user)
 
@@ -78,7 +78,7 @@ def liked_haikus(request):
 
 def following_feed(request):
     if not request.user.is_authenticated:
-        return render(request, 'login_required.html')
+        return redirect('five_seven_five_app:login')
 
     user = User.objects.get(username=request.user)
 
