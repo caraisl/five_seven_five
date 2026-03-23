@@ -22,30 +22,28 @@ src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js">
         <div id="navbar">
             <ul>
                 <li><a href="{% url 'five_seven_five_app:index' %}">Home</a></li>
-                <li><a href="{% url 'five_seven_five_app:liked' %}">Likes</a></li>
+                <li><a href="{% url 'five_seven_five_app:liked' %}">Liked</a></li>
                 <li><a href="{% url 'five_seven_five_app:following' %}">Following</a></li>
+        
                 <li>
-                    <form method="get" action="/search/">
+                    <form method="get" action="{% url 'five_seven_five_app:search' %}">
                         {% if query %}
-                        <input type="text" name="q" value="{{ query }}" placeholder="Search.."/>
+                            <input type="text" name="q" value="{{ query }}" placeholder="Search.."/>
                         {% else %}
-                        <input type="text" name="q" placeholder="Search.."/>
+                            <input type="text" name="q" placeholder="Search.."/>
                         {% endif %}
                         <button type="submit">Search</button>
                     </form>
                 </li>
-            
+        
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'five_seven_five_app:logout' %}">Logout</a></li>
-
-                    <li><a href="{% url 'five_seven_five_app:profile' user.username %}">Profile</a></li>
-        
+                    <li><a href="{% url 'five_seven_five_app:profile' user.username %}">My Profile</a></li>
                 {% else %}
-                    <li><a href="{% url 'five_seven_five_app:register' %}">Sign Up</a></li>
-                    <li><a href="{% url 'five_seven_five_app:login' %}">Login</a></li>
+                    <li><a href="{% url 'five_seven_five_app:register' %}">Register</a></li>
+                    <li><a href="{% url 'five_seven_five_app:login' %}">Log In</a></li>
                 {% endif %}
             </ul>
-
         </div>
 
         <div id="mainContent">

@@ -48,7 +48,19 @@
             <button type="submit">Post Comment</button>
         </form>
     {% else %}
-        <p>Please <a href="{% url 'five_seven_five_app:login' %}">log in</a> to comment.</p>
+        <div class="login-prompt-box">
+            <p>You need to log in to comment on this haiku.</p>
+            <p>
+                <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}">
+                    Log in
+                </a>
+                or
+                <a href="{% url 'five_seven_five_app:register' %}">
+                    Register
+                </a>
+                instead.
+            </p>
+        </div>
     {% endif %}
 
 {% endblock %}

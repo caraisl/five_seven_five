@@ -1,11 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block body_block %}
-    <h1>Login</h1>
+<div class="auth-page">
+    <h1>Log in to Five Seven Five</h1>
+    <p>Log in to your account to share haikus, like, comment and follow other users.</p>
+
+    {% if error %}
+        <p class="form-error">{{ error }}</p>
+    {% endif %}
+
+    {% if next %}
+        <p class="login-hint">Please log in to continue.</p>
+    {% endif %}
+
     <form method="post" action="{% url 'five_seven_five_app:login' %}">
         {% csrf_token %}
-        Username: <input type="text" name="username" /><br />
-        Password: <input type="password" name="password" /><br />
-        <input type="submit" value="Login" />
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <p>
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" id="id_username" required>
+        </p>
+
+        <p>
+            <label for="id_password">Password:</label>
+            <input type="password" name="password" id="id_password" required>
+        </p>
+
+        <button type="submit">Log In</button>
     </form>
+
+    <p>
+        Not got an account?
+        <a href="{% url 'five_seven_five_app:register' %}">Register</a>
+    </p>
+</div>
 {% endblock %}

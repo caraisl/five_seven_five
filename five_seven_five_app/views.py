@@ -61,29 +61,22 @@ def profile(request, username):
     return render(request, 'profile.html', context)
 
 
+@login_required
 def liked_haikus(request):
-    if not request.user.is_authenticated:
-        return render(request, 'login_required.html')
-
     user = User.objects.get(username=request.user)
 
     liked = Like.objects.filter(username=user)
-
     haikus = [like.haiku for like in liked]
-    context = feed(request, haikus)
-    
 
+    context = feed(request, haikus)
     return render(request, 'liked.html', context)
 
 
+@login_required
 def following_feed(request):
-    if not request.user.is_authenticated:
-        return render(request, 'login_required.html')
-
     user = User.objects.get(username=request.user)
 
     following = Follow.objects.filter(follower=user)
-
     users = [f.following for f in following]
 
     haikus = Haiku.objects.filter(username__username__in=users)
@@ -92,7 +85,6 @@ def following_feed(request):
     return render(request, 'following.html', context)
 
 def register(request):
-    registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = ProfileForm(data=request.POST, files=request.FILES)
@@ -109,36 +101,46 @@ def register(request):
             profile.created_at = datetime.date.today()
             profile.save()
 
-            registered = True
-        else:
-            print(user_form.errors, profile_form.errors)
+            login(request, user)
+            return redirect('five_seven_five_app:index')
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
 
     return render(request, 'register.html', {
         'user_form': user_form,
-        'profile_form': profile_form,
-        'registered': registered
+        'profile_form': profile_form
     })
 
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        next_url = request.POST.get('next', '')
 
         user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
                 login(request, user)
+
+                if next_url:
+                    return redirect(next_url)
+
                 return redirect('five_seven_five_app:index')
             else:
-                return HttpResponse("Your account has been disabled.")
+                return render(request, 'login.html', {
+                    'error': 'Your account has been disabled.',
+                    'next': next_url
+                })
         else:
-            return HttpResponse("Invalid login information.")
-    
-    return render(request, 'login.html')
+            return render(request, 'login.html', {
+                'error': 'Incorrect username or password.',
+                'next': next_url
+            })
+
+    next_url = request.GET.get('next', '')
+    return render(request, 'login.html', {'next': next_url})
 
 @login_required
 def user_logout(request):

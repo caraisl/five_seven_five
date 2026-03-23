@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block body_block %}
-    <h1>Register with Five Seven Five</h1>
-    {% if registered %}
-        <p>Registration successful! <a href="{% url 'five_seven_five_app:login' %}">Login here.</a></p>
-    {% else %}
-        <form method="post" action="{% url 'five_seven_five_app:register' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            <input type="submit" value="Register" />
-        </form>
-    {% endif %}
+<div class="auth-page">
+    <h1>Register for Five Seven Five</h1>
+    <p>Create an account to share haikus, like, comment and follow other users.</p>
+
+    <form method="post" action="{% url 'five_seven_five_app:register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+
+    <p>
+        Already got an account?
+        <a href="{% url 'five_seven_five_app:login' %}">Log in</a>
+    </p>
+</div>
 {% endblock %}
