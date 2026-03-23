@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile, Haiku
+from django.core.exceptions import ValidationError
 import datetime
+import syllables
 
 # A form for handling basic User data 
 class UserForm(forms.ModelForm):
@@ -23,3 +25,15 @@ class HaikuForm(forms.ModelForm):
     class Meta:
         model = Haiku
         fields = ('haiku', 'haiku_picture',)
+    
+    def clean_haiku(self):
+        value = self.cleaned_data["haiku"]
+        if not validate_haiku(value):
+            raise ValidationError(("Not a haiku. Please check your syllables."),
+    code="invalid",)
+        return value
+
+
+def validate_haiku(haiku):
+    syllable_count = [syllables.estimate(line) for line in haiku.split("\n")]
+    return syllable_count == [5,7,5]

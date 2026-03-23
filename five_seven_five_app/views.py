@@ -204,19 +204,11 @@ def post_haiku(request):
             haiku = form.save(commit=False)
             haiku.username = user_profile
             haiku.created_at = datetime.date.today()
-            if validate_haiku(haiku.haiku_text):
-                haiku.save()
-                return redirect('five_seven_five_app:index')
-            else:
-                return JsonResponse({"error": "not a valid haiku."}, status=400)
+            haiku.save()
     else:
         form = HaikuForm()
 
     return render(request, 'post_haiku.html', {'form': form})
-
-def validate_haiku(haiku):
-    syllable_count = [syllables.estimate(line) for line in haiku.split("\n")]
-    return syllable_count == [5,7,5]
 
 @login_required
 def toggle_like(request, haiku_id):

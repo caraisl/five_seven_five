@@ -102,3 +102,12 @@ body {
     right:1em;
 }
 
+.errorlist li{
+    color: red;
+    list-style: none;
+}
+
+.errorlist {
+    padding-left:0;
+}
+

@@ -8,9 +8,9 @@ Post a Haiku
 {% block body_block %}
     <h1>Post a New Haiku</h1>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="haikuPost">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Post Haiku</button>
+        <button type="submit" id="haikuSubmit">Post Haiku</button>
     </form>
 {% endblock %}
