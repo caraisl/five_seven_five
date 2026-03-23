@@ -236,3 +236,36 @@ def toggle_like(request, haiku_id):
         "liked": liked,
         "like_count": like_count
     })
+
+@login_required
+def toggle_follow(request, username):
+    if request.method != "POST":
+        return HttpResponse(status=400)
+
+    target_user = get_object_or_404(User, username=username)
+
+    if request.user == target_user:
+        return HttpResponse(status=400)
+
+    follow = Follow.objects.filter(
+        follower=request.user,
+        following=target_user
+    ).first()
+
+    if follow:
+        follow.delete()
+        is_following = False
+    else:
+        Follow.objects.create(
+            follower=request.user,
+            following=target_user,
+            created_at=timezone.now().date()
+        )
+        is_following = True
+
+    follower_count = Follow.objects.filter(following=target_user).count()
+
+    return JsonResponse({
+        "is_following": is_following,
+        "follower_count": follower_count
+    })
