@@ -49,16 +49,30 @@ def haiku_detail(request, haiku_id):
 
 def profile(request, username):
     user = get_object_or_404(Profile, username__username=username)
-    profile = Profile.objects.get(username=user)
+
     haikus = Haiku.objects.filter(username=user)
-    context = feed(request, haikus)
-    context['profile'] = profile;
 
-    
+    profile = Profile.objects.get(username=user)
 
+    profiles = [Profile.objects.get(username=haiku.username) for haiku in haikus]
 
+    follower_count = Follow.objects.filter(following=profile.username).count()
 
-    return render(request, 'profile.html', context)
+    if request.user.is_authenticated:
+        is_following = Follow.objects.filter(
+            follower=request.user,
+            following=profile.username
+        ).exists()
+    else:
+        is_following = False
+
+    return render(request, 'profile.html', {
+        'profile': profile,
+        'haikus': haikus,
+        'profiles': profiles,
+        'follower_count': follower_count,
+        'is_following': is_following
+    })
 
 
 @login_required
