@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll(".follow-btn").forEach(button => {
         button.addEventListener("click", function () {
-            const followUser = this.dataset.profile.username;
+            const followUser = this.dataset.profileUsername;
             const btn = this;
 
             fetch(`/profile/${followUser}/follow/`, {
@@ -34,8 +34,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(data => {
-                btn.textContent = data.followed ? "Unfollow" : "Follow";
-                document.getElementById(`like-count-${haikuId}`).textContent = data.follow_count;
+                btn.textContent = data.is_following ? "Unfollow" : "Follow";
+                document.getElementById("follower-count").textContent = data.follower_count;
+                document.getElementById("follower-label").textContent =
+                    data.follower_count === 1 ? "Follower" : "Followers";
             })
             .catch(error => console.error("Follow toggle error:", error));
         });

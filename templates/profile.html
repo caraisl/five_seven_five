@@ -13,15 +13,16 @@
         <button class="follow-btn profileButton"" data-profile-username="{{ profile.username }}">
             
         {% if is_following %}
-            Follow
-        {% else %}
             Unfollow
+        {% else %}
+            Follow
         {% endif %}
+
         </button>
         {% endif %}
     {% endif %}
     </div>
-    <p id="follower-count"> {{follower_count}}
+    <p > <span id="follower-count">{{follower_count}}</span>
     {% if follower_count == 1 %}
          Follower
     {% else %}
