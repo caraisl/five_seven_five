@@ -6,14 +6,16 @@
 {% endblock %}
 
 {% block body_block %}
+    <div id="haiku_detail_box">
 
+    <div id="haiku_box">
     <h1>{{ haiku.username }}</h1>
 
     {% if haiku.username.profile_picture %}
         <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" alt="profile picture" width="100">
     {% endif %}
 
-    <p>{{ haiku.haiku }}</p>
+    <pre>{{ haiku.haiku }}</pre>
 
     {% if haiku.haiku_picture %}
         <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="haiku image" width="300">
@@ -21,7 +23,9 @@
 
     <p>Created at: {{ haiku.created_at }}</p>
 
-    <hr>
+    </div>
+
+    <div id="comment_box">
 
     <h2>Comments</h2>
 
@@ -62,5 +66,7 @@
             </p>
         </div>
     {% endif %}
+    </div>
+    </div>
 
 {% endblock %}

@@ -55,7 +55,6 @@ body {
     border-radius: 1.5em;
     text-decoration: none;
     color:black;
-    width:fit-content;
 }
 
 
@@ -83,6 +82,24 @@ body {
 
 .usernameCont{
     display: flex;
+    align-items: center;
+    height: fit-content;
+
+}
+
+.profileButton{
+    background-color: deeppink;
+    border-radius: 0.5em;
+    padding:0.5em;
+    margin:1em;
+    color:white;
+    text-decoration: none;
+
+}
+
+.usernameCont h1{
+    display: inline;
+    width:fit-content
 }
 
 #feedContainer{
