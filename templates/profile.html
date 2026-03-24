@@ -9,23 +9,23 @@
         {% if profile.username.username == user.username %}
         <p><a href="{% url 'five_seven_five_app:edit_profile' %}">Edit Profile</a></p>
         {% else %}
-        <p> {{is_following}}</p>
-        <button class="follow-btn" data-profile-username="{{ profile.username }}">
+        <button class="follow-btn" data-profile-username="{{ profile.username.username }}">
             
         {% if is_following %}
-            Follow
-        {% else %}
             Unfollow
+        {% else %}
+            Follow
         {% endif %}
         </button>
         {% endif %}
     {% endif %}
-    <p id="follower-count"> {{follower_count}}
+<p>
+    <span id="follower-count">{{ follower_count }}</span>
     {% if follower_count == 1 %}
-         Follower
+        Follower
     {% else %}
-          Followers
+        Followers
     {% endif %}
-    </p>
+</p>
 <p>{{ profile.bio }}</p>
 {% endblock %}
