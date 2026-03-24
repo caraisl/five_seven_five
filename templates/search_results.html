@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'feed.html' %}
 {% load static %}
 
-{% block body_block %}
 <div class="search-container">
+    {% block feed_desc %}
     <h1>Search Results for "{{ query }}"</h1>
 
     <div class="search-stats">
@@ -11,6 +11,7 @@
             <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" style="margin-left: 20px;">← Back to all results</a>
         {% endif %}
     </div>
+
 
     <div class="results-wrapper">
         
@@ -22,22 +23,16 @@
                     <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}&type=haiku" class="filter-btn">See more Haikus</a>
                 {% endif %}
             </div>
-            
-            <div class="haiku-list">
-                {% for haiku in haiku_results %}
-                    <div class="haiku-card">
-                        <p>{{ haiku.haiku }}</p>
-                        <small>by {{ haiku.username.username.username }}</small>
-                    </div>
-                {% empty %}
-                    <p>No haikus found.</p>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
+            {% if haiku_count == 0 %}
+            <p>No haikus found.</p>
+            {% endif %}
+         {% endif %}
 
+{% endblock %}
+       
+
+        {% block afterFeed %}
         {% if search_type == 'all' %}<hr>{% endif %}
-
         {% if search_type == 'all' or search_type == 'user' %}
         <section class="result-section">
             <div class="section-header">
@@ -48,7 +43,7 @@
             </div>
 
             <div class="user-grid">
-                {% for profile in user_results %}
+                {% for profile in users %}
                     <div class="user-card">
                         <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" width="40">
                         <a href="{% url 'five_seven_five_app:profile' profile.username.username %}">{{ profile.username.username }}</a>
@@ -59,7 +54,7 @@
             </div>
         </section>
         {% endif %}
+        {% endblock %}
 
     </div>
 </div>
-{% endblock %}
