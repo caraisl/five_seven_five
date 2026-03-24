@@ -33,6 +33,10 @@
         <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}" class="login-link-inline">
             Log in to like
         </a>
+
+        <span id="like-count-{{ haiku.id }}">
+            {{ haiku.like_count|default:0 }}
+        </span>
     {% endif %}
 
     
@@ -42,10 +46,7 @@
         <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
     {% endif %}
 
-    <span id="like-count-{{ haiku.id }}">
-        {{ haiku.like_count|default:0 }}
-    </span>
-    
+
         <p>Likes {{haiku.like_count}}, Comment: {{haiku.comment_count}}</p>
     </div>
     

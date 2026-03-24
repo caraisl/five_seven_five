@@ -54,8 +54,6 @@ def profile(request, username):
 
     profile = Profile.objects.get(username=user)
 
-    profiles = [Profile.objects.get(username=haiku.username) for haiku in haikus]
-
     follower_count = Follow.objects.filter(following=profile.username).count()
 
     if request.user.is_authenticated:
@@ -69,7 +67,6 @@ def profile(request, username):
     return render(request, 'profile.html', {
         'profile': profile,
         'haikus': haikus,
-        'profiles': profiles,
         'follower_count': follower_count,
         'is_following': is_following
     })

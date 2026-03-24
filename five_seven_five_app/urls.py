@@ -17,6 +17,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('post/', views.post_haiku, name="post_haiku"),
     path('haiku/<int:haiku_id>/like/', views.toggle_like, name='toggle_like'),
+    path('profile/<str:username>/follow/', views.toggle_follow, name='toggle_follow'),
     path('haiku/<int:haiku_id>/comment/', views.add_comment, name='add_comment'),
     path('edit_profile',views.edit_profile, name='edit_profile'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

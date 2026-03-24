@@ -20,6 +20,26 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Like toggle error:", error));
         });
     });
+
+    document.querySelectorAll(".follow-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const followUser = this.dataset.profile.username;
+            const btn = this;
+
+            fetch(`/profile/${followUser}/follow/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.textContent = data.followed ? "Unfollow" : "Follow";
+                document.getElementById(`like-count-${haikuId}`).textContent = data.follow_count;
+            })
+            .catch(error => console.error("Follow toggle error:", error));
+        });
+    });
 });
 
 function getCookie(name) {
