@@ -5,8 +5,8 @@ from django.conf import settings
 
 class Profile(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    bio = models.CharField(max_length=100)
-    profile_picture = models.ImageField(upload_to=settings.MEDIA_ROOT)
+    bio = models.CharField(max_length=100, blank=True, null=False, default="")
+    profile_picture = models.ImageField(upload_to=settings.MEDIA_ROOT, blank=True, null=False, default=settings.MEDIA_ROOT + 'default.png')
     created_at = models.DateField()
 
     def __str__(self):

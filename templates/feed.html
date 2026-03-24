@@ -35,17 +35,17 @@
         </a>
     {% endif %}
 
-    <span id="like-count-{{ haiku.id }}">
-        {{ haiku.like_count|default:0 }}
-    </span>
+    
+
+    
+    {% if haiku.haiku_picture %}
+        <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
+    {% endif %}
 
     <span id="like-count-{{ haiku.id }}">
         {{ haiku.like_count|default:0 }}
     </span>
     
-    {% if haiku.haiku_picture %}
-        <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
-    {% endif %}
         <p>Likes {{haiku.like_count}}, Comment: {{haiku.comment_count}}</p>
     </div>
     

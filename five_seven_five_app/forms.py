@@ -15,6 +15,9 @@ class UserForm(forms.ModelForm):
 
 # profile description, profile picture
 class ProfileForm(forms.ModelForm):
+    bio = forms.CharField(widget=forms.Textarea(attrs={'style': "display:block;"}), required=False)
+    profile_picture = forms.ImageField(required=False)
+
     class Meta:
         model = Profile
         fields = ('bio', 'profile_picture',)

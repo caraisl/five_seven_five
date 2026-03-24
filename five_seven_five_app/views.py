@@ -221,6 +221,7 @@ def post_haiku(request):
             haiku.username = user_profile
             haiku.created_at = datetime.date.today()
             haiku.save()
+            return redirect('five_seven_five_app:haiku_detail', haiku_id=haiku.id)
     else:
         form = HaikuForm()
 
@@ -252,6 +253,26 @@ def toggle_like(request, haiku_id):
         "liked": liked,
         "like_count": like_count
     })
+
+@login_required 
+def edit_profile(request):
+    user_profile = get_object_or_404(Profile, username=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            if form.cleaned_data['bio'] != "":
+                user_profile.bio = form.cleaned_data['bio']
+            if form.cleaned_data['profile_picture'] != None:
+                user_profile.profile_picture = form.cleaned_data['profile_picture']
+            
+            user_profile.save()
+            return redirect('five_seven_five_app:profile', username=user_profile.username.username)
+    else:
+        form = ProfileForm()
+        
+
+    return render(request, 'edit_profile.html', {'form': form})
 
 @login_required
 def toggle_follow(request, username):
