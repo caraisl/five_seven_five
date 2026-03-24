@@ -9,13 +9,13 @@
         {% if profile.username.username == user.username %}
         <p><a href="{% url 'five_seven_five_app:edit_profile' %}">Edit Profile</a></p>
         {% else %}
-        <button class="follow-btn" data-profile-username="{{ profile.username.username }}">
-            
+
         {% if is_following %}
             Unfollow
         {% else %}
             Follow
         {% endif %}
+
         </button>
         {% endif %}
     {% endif %}
