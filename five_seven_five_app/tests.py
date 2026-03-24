@@ -77,9 +77,9 @@ class FiveSevenFiveViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_search_results_page_loads(self):
+    def test_search_page_loads(self):
         response = self.client.get(
-            reverse('five_seven_five_app:search_results'),
+            reverse('five_seven_five_app:search'),
             {'q': 'silent'}
         )
 
@@ -151,13 +151,13 @@ class FiveSevenFiveViewTests(TestCase):
             Follow.objects.filter(follower=self.user, following=self.user).exists()
         )
 
-    def test_following_feed_requires_login(self):
-        response = self.client.get(reverse('five_seven_five_app:following_feed'))
+    def test_following_page_requires_login(self):
+        response = self.client.get(reverse('five_seven_five_app:following'))
 
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('five_seven_five_app:login'), response.url)
 
-    def test_logged_in_user_can_view_following_feed(self):
+    def test_logged_in_user_can_view_following_page(self):
         Follow.objects.create(
             follower=self.user,
             following=self.other_user,
@@ -171,18 +171,18 @@ class FiveSevenFiveViewTests(TestCase):
         )
 
         self.client.login(username='alice', password='testpass123')
-        response = self.client.get(reverse('five_seven_five_app:following_feed'))
+        response = self.client.get(reverse('five_seven_five_app:following'))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, other_haiku.haiku)
 
-    def test_liked_feed_requires_login(self):
-        response = self.client.get(reverse('five_seven_five_app:liked_feed'))
+    def test_liked_page_requires_login(self):
+        response = self.client.get(reverse('five_seven_five_app:liked'))
 
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('five_seven_five_app:login'), response.url)
 
-    def test_logged_in_user_can_view_liked_feed(self):
+    def test_logged_in_user_can_view_liked_page(self):
         Like.objects.create(
             username=self.user,
             haiku=self.haiku,
@@ -190,7 +190,7 @@ class FiveSevenFiveViewTests(TestCase):
         )
 
         self.client.login(username='alice', password='testpass123')
-        response = self.client.get(reverse('five_seven_five_app:liked_feed'))
+        response = self.client.get(reverse('five_seven_five_app:liked'))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.haiku.haiku)
@@ -200,7 +200,7 @@ class FiveSevenFiveViewTests(TestCase):
 
         response = self.client.post(
             reverse('five_seven_five_app:add_comment', args=[self.haiku.id]),
-            {'comment': 'Lovely haiku'}
+            {'comment_text': 'Lovely haiku'}
         )
 
         self.assertEqual(response.status_code, 302)
@@ -208,7 +208,7 @@ class FiveSevenFiveViewTests(TestCase):
             Comment.objects.filter(
                 username=self.user,
                 haiku=self.haiku,
-                comment='Lovely haiku'
+                comment_text='Lovely haiku'
             ).exists()
         )
 
@@ -218,4 +218,4 @@ class FiveSevenFiveViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.haiku.haiku)
+        self.assertContains(response, 'An old silent pond')
