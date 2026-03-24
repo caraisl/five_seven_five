@@ -6,11 +6,14 @@ Post a Haiku
 {% endblock %}
 
 {% block body_block %}
+<div class="auth-page">
     <h1>Post a New Haiku</h1>
+    <p>Share a new haiku with the community.</p>
 
     <form method="post" enctype="multipart/form-data" id="haikuPost">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" id="haikuSubmit">Post Haiku</button>
     </form>
+</div>
 {% endblock %}

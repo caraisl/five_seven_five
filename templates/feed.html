@@ -24,37 +24,47 @@
                         </h1>
                     </div>
 
-                    <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{ haiku.haiku }}</a></pre>
+    {% if haikus %}
+    {% for haiku in haikus%}
+    <div class="haikuCard">
+        <div class="usernameCont">
+        <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}" class="profileImg"/>
+        <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
+        </div>
+    <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{haiku.haiku}}</a></pre>
+    
+    {% if haiku.haiku_picture %}
+        <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
+    {% endif %}
 
-                    {% if user.is_authenticated %}
-                        <button class="like-btn" data-haiku-id="{{ haiku.id }}">
-                            {% if haiku.is_liked %}
-                                Unlike
-                            {% else %}
-                                Like
-                            {% endif %}
-                        </button>
-                    {% else %}
-                        <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}" class="login-link-inline">
-                            Log in to like
-                        </a>
-                    {% endif %}
-
-                    <p>
-                        Likes: <span id="like-count-{{ haiku.id }}">{{ haiku.like_count|default:0 }}</span>,
-                        Comments: {{ haiku.comment_count }}
-                    </p>
-
-                    {% if haiku.haiku_picture %}
-                        <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="Haiku image">
-                    {% endif %}
-                </div>
-            {% endfor %}
+    <div class="card-meta">
+        {% if user.is_authenticated %}
+        <button class="like-btn" data-haiku-id="{{ haiku.id }}">
+            {% if haiku.is_liked %}
+                Unlike
+            {% else %}
+                Like
+            {% endif %}
+        </button>
+        {% else %}
+        <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}" class="login-link-inline">
+            Log in to like
+        </a>
         {% endif %}
+
+        <span id="like-count-{{ haiku.id }}">
+            {{ haiku.like_count|default:0 }}
+        </span>
+
+        <span>
+            Comments {{ haiku.comment_count|default:0 }}
+        </span>
+    </div>
+
     </div>
 
     {% if user.is_authenticated %}
-        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku' %}">Post</a>
+        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku'%}">Post A Haiku</a>
     {% endif %}
 
     {% block afterFeed %}

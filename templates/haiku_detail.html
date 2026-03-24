@@ -6,61 +6,65 @@
 {% endblock %}
 
 {% block body_block %}
-
-    <h1>{{ haiku.username }}</h1>
-
-    {% if haiku.username.profile_picture %}
-        <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" alt="profile picture" width="100">
-    {% endif %}
-
-    <p>{{ haiku.haiku }}</p>
-
-    {% if haiku.haiku_picture %}
-        <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="haiku image" width="300">
-    {% endif %}
-
-    <p>Created at: {{ haiku.created_at }}</p>
-
-    <hr>
-
-    <h2>Comments</h2>
-
-    {% if comments %}
-        {% for comment in comments %}
-            <p>
-                <strong>{{ comment.username.username }}</strong>:
-                {{ comment.comment_text }}
-                <br>
-                <small>{{ comment.created_at }}</small>
-            </p>
-        {% endfor %}
-    {% else %}
-        <p>No comments yet.</p>
-    {% endif %}
-
-    <hr>
-
-    {% if user.is_authenticated %}
-        <h3>Add a comment</h3>
-        <form method="post" action="{% url 'five_seven_five_app:add_comment' haiku.id %}">
-            {% csrf_token %}
-            <input type="text" name="comment_text" placeholder="Write a comment" maxlength="100" required>
-            <button type="submit">Post Comment</button>
-        </form>
-    {% else %}
-        <div class="login-prompt-box">
-            <p>You need to log in to comment on this haiku.</p>
-            <p>
-                <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}">
-                    Log in
-                </a>
-                or
-                <a href="{% url 'five_seven_five_app:register' %}">
-                    Register
-                </a>
-                instead.
-            </p>
+<div class="detail-page">
+     <div class="detail-left">
+         <div class="usernameCont">
+            {% if haiku.username.profile_picture %}
+                <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" alt="profile picture" width="100">
+            {% endif %}
+            <h1>{{ haiku.username }}</h1>
         </div>
-    {% endif %}
+
+        <pre>{{ haiku.haiku }}</pre>
+
+        {% if haiku.haiku_picture %}
+            <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="haiku image" width="300">
+        {% endif %}
+
+        <p><strong>Created at:</strong> {{ haiku.created_at }}</p>
+    </div>
+
+    <div class="detail-right">
+        <h2>Comments</h2>
+
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="comment-card">
+                    <p>
+                        <strong>{{ comment.username.username }}</strong>:
+                        {{ comment.comment_text }}
+                    </p>
+                    <small>{{ comment.created_at }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="comment-form-box">
+                <h3>Add a comment</h3>
+                <form method="post" action="{% url 'five_seven_five_app:add_comment' haiku.id %}">
+                    {% csrf_token %}
+                    <input type="text" name="comment_text" placeholder="Write a comment" maxlength="100" required>
+                    <button type="submit">Post Comment</button>
+                </form>
+             </div>
+        {% else %}
+            <div class="login-prompt-box">
+                <p>You need to log in to comment on this haiku.</p>
+                <p>
+                    <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}">
+                        Log in
+                    </a>
+                    or
+                    <a href="{% url 'five_seven_five_app:register' %}">
+                        Register
+                    </a>
+                    instead.
+                </p>
+            </div>
+        {% endif %}
+    </div>
 
 {% endblock %}
