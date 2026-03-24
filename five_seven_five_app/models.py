@@ -6,7 +6,7 @@ from django.conf import settings
 class Profile(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     bio = models.CharField(max_length=100, blank=True, null=False, default="")
-    profile_picture = models.ImageField(upload_to=settings.MEDIA_ROOT, blank=True, null=False, default=settings.MEDIA_ROOT + 'default.png')
+    profile_picture = models.ImageField(upload_to='profile_pictures/')
     created_at = models.DateField()
 
     def __str__(self):
@@ -16,7 +16,7 @@ class Haiku(models.Model):
     username = models.ForeignKey(Profile, on_delete=models.CASCADE)
     haiku = models.CharField(max_length=1000)
     created_at = models.DateField()
-    haiku_picture = models.ImageField(upload_to=settings.MEDIA_ROOT,blank=True)
+    haiku_picture = models.ImageField(upload_to='haiku_pictures/', blank=True)
 
     def __str__(self):
         return self.haiku
