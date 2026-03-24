@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title_block %}
@@ -10,53 +10,51 @@
     {% block feed_desc %}
 
     {% endblock %}
+
     <div id="feedContainer">
+        {% if haikus %}
+            {% for haiku in haikus %}
+                <div class="haikuCard">
+                    <div class="usernameCont">
+                        <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" class="profileImg" alt="{{ haiku.username }} profile picture"/>
+                        <h1>
+                            <a href="{% url 'five_seven_five_app:profile' haiku.username %}">
+                                {{ haiku.username }}
+                            </a>
+                        </h1>
+                    </div>
 
-    {% if haikus %}
-    {% for haiku in haikus%}
-    <div class="haikuCard">
-        <div class="usernameCont">
-        <img src="{{ MEDIA_URL }}{{haiku.username.profile_picture}}" class="profileImg"/>
-        <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{haiku.username}}</a></h1>
-        </div>
-    <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{haiku.haiku}}</a></pre>
+                    <pre><a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{ haiku.haiku }}</a></pre>
 
-    {% if user.is_authenticated %}
-    <button class="like-btn" data-haiku-id="{{ haiku.id }}">
-        {% if haiku.is_liked %}
-            Unlike
-        {% else %}
-            Like
+                    {% if user.is_authenticated %}
+                        <button class="like-btn" data-haiku-id="{{ haiku.id }}">
+                            {% if haiku.is_liked %}
+                                Unlike
+                            {% else %}
+                                Like
+                            {% endif %}
+                        </button>
+                    {% else %}
+                        <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}" class="login-link-inline">
+                            Log in to like
+                        </a>
+                    {% endif %}
+
+                    <p>
+                        Likes: <span id="like-count-{{ haiku.id }}">{{ haiku.like_count|default:0 }}</span>,
+                        Comments: {{ haiku.comment_count }}
+                    </p>
+
+                    {% if haiku.haiku_picture %}
+                        <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="Haiku image">
+                    {% endif %}
+                </div>
+            {% endfor %}
         {% endif %}
-    </button>
-    {% else %}
-        <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}" class="login-link-inline">
-            Log in to like
-        </a>
-
-        <span id="like-count-{{ haiku.id }}">
-            {{ haiku.like_count|default:0 }}
-        </span>
-    {% endif %}
-
-    
-
-    
-    {% if haiku.haiku_picture %}
-        <img src="{{ MEDIA_URL }}{{haiku.haiku_picture}}">
-    {% endif %}
-
-
-        <p>Likes {{haiku.like_count}}, Comment: {{haiku.comment_count}}</p>
     </div>
-    
-
-    {% endfor %}
-    </div>
-    {% endif %}
 
     {% if user.is_authenticated %}
-        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku'%}">Post</a>
+        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku' %}">Post</a>
     {% endif %}
 
     {% block afterFeed %}

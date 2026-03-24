@@ -1,22 +1,30 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
 
 
 class Profile(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    bio = models.CharField(max_length=100, blank=True, null=False, default="")
-    profile_picture = models.ImageField(upload_to='profile_pictures/')
+    bio = models.CharField(max_length=100, blank=True, default="")
+    profile_picture = models.ImageField(
+        upload_to='profile_pictures/',
+        blank=True,
+        null=True
+    )
     created_at = models.DateField()
 
     def __str__(self):
         return str(self.username)
 
+
 class Haiku(models.Model):
     username = models.ForeignKey(Profile, on_delete=models.CASCADE)
     haiku = models.CharField(max_length=1000)
     created_at = models.DateField()
-    haiku_picture = models.ImageField(upload_to='haiku_pictures/', blank=True)
+    haiku_picture = models.ImageField(
+        upload_to='haiku_pictures/',
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.haiku
@@ -24,8 +32,8 @@ class Haiku(models.Model):
 
 class Comment(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
-    haiku = models.ForeignKey(Haiku,  on_delete=models.CASCADE)
-    comment_text =  models.CharField(max_length=100)
+    haiku = models.ForeignKey(Haiku, on_delete=models.CASCADE)
+    comment_text = models.CharField(max_length=100)
     created_at = models.DateField()
 
     def __str__(self):
@@ -34,7 +42,7 @@ class Comment(models.Model):
 
 class Like(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
-    haiku = models.ForeignKey(Haiku,  on_delete=models.CASCADE)
+    haiku = models.ForeignKey(Haiku, on_delete=models.CASCADE)
     created_at = models.DateField()
 
     def __str__(self):
@@ -42,8 +50,8 @@ class Like(models.Model):
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following" )
-    following = models.ForeignKey(User, on_delete=models.CASCADE,related_name="followed_by" )
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_by")
     created_at = models.DateField()
 
     def __str__(self):

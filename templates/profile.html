@@ -10,13 +10,14 @@
         <p><a href="{% url 'five_seven_five_app:edit_profile' %}">Edit Profile</a></p>
         {% else %}
 
-        {% if is_following %}
-            Unfollow
-        {% else %}
-            Follow
-        {% endif %}
-
+        <button class="follow-btn" data-profile-username="{{ profile.username }}">
+            {% if is_following %}
+                Unfollow
+            {% else %}
+                Follow
+            {% endif %}
         </button>
+
         {% endif %}
     {% endif %}
 <p>
