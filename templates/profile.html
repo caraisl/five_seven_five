@@ -21,11 +21,13 @@
     {% endif %}
 <p>
     <span id="follower-count">{{ follower_count }}</span>
-    {% if follower_count == 1 %}
-        Follower
-    {% else %}
-        Followers
-    {% endif %}
+    <span id="follower-label">
+        {% if follower_count == 1 %}
+            Follower
+        {% else %}
+            Followers
+        {% endif %}
+    </span>
 </p>
 <p>{{ profile.bio }}</p>
 {% endblock %}
