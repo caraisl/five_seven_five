@@ -58,15 +58,16 @@
         {% if comments %}
             {% for comment in comments %}
                 <div class="comment-card">
-                    <p>
-                        <div class="usernameCont">
-                        <img class="profileImg" src="{{ MEDIA_URL }}{{ comment.profile.profile_picture }}"
-                        <strong>{{ comment.username.username }}</strong></div>
-                        {{ comment.comment_text }}
-                    </p>
-                    <small>{{ comment.created_at }}</small>
+                    <div class="usernameCont">
+                        <img class="profileImg"
+                        src="{{ MEDIA_URL }}{{ comment.profile.profile_picture }}"
+                        alt="{{ comment.username.username }} profile picture">
+                    <strong>{{ comment.username.username }}</strong>
                 </div>
-            {% endfor %}
+                <p>{{ comment.comment_text }}</p>
+                <small>{{ comment.created_at }}</small>
+            </div>
+        {% endfor %}
         {% else %}
             <p>No comments yet.</p>
         {% endif %}
