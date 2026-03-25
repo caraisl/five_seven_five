@@ -138,7 +138,7 @@ i{
     margin:12px;
 }
 
-.haikuCard:hover {
+.haikuCard:hover, .user-card:hover {
     transform: translateY(-3px);
 }
 
@@ -362,4 +362,10 @@ i{
 
 .like-btn, .follow-btn {
     transition: 0.2s;
+}
+
+.user-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap:20px;
 }
