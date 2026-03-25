@@ -41,6 +41,10 @@ def feed(request, haikus):
 def haiku_detail(request, haiku_id):
     haiku = get_object_or_404(Haiku, id=haiku_id)
     comments = Comment.objects.filter(haiku=haiku)
+    haiku.like_count = Like.objects.filter(haiku=haiku).count()
+    haiku.comment_count = Comment.objects.filter(haiku=haiku).count()
+    for comment in comments:
+        comment.profile = Profile.objects.get(username = comment.username)
 
     return render(request, 'haiku_detail.html', {
         'haiku': haiku,
