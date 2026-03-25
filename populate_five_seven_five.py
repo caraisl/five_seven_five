@@ -45,7 +45,7 @@ def populate():
         newUser.set_password(user['password'])
         newUser.save()
 
-        if created:
+        if Profile.objects.filter(username = newUser).count == 0:
             print(os.path.join("populate_pics", user.get('profile_pic','default.png')))
             with open(os.path.join("populate_pics", user.get('profile_pic','default.png')), 'rb') as f:
                 profile_pic = File(f)
