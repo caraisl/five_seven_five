@@ -63,7 +63,7 @@ def count_syllables(haiku):
     syllable_counts = [0,0,0]
     for i,line in enumerate(words):
         for word in line:
-            if syllables_dict.get(re.sub(r'[^A-Za-z\']','','7',word.lower())) != None:
+            if syllables_dict.get(re.sub(r'[^A-Za-z\']','',word.lower())) != None:
                 for phoneme in syllables_dict.get(word.strip().lower())[0]:
                     if phoneme[:2] in vowels:
                         syllable_counts[i] += 1
