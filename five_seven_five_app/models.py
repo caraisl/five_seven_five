@@ -8,7 +8,8 @@ class Profile(models.Model):
     profile_picture = models.ImageField(
         upload_to='profile_pictures/',
         blank=True,
-        null=True
+        null=True,
+        default='profile_pictures/default_pic.png'
     )
     created_at = models.DateField()
 

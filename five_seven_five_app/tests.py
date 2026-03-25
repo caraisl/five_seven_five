@@ -14,14 +14,12 @@ class HaikuValidationTests(TestCase):
     def test_validate_haiku_returns_true_for_575_pattern(self, mock_estimate):
         mock_estimate.side_effect = [5, 7, 5]
         haiku = 'first line\nsecond line\nthird line'
-
         self.assertTrue(validate_haiku(haiku))
 
     @patch('five_seven_five_app.forms.syllables.estimate')
     def test_validate_haiku_returns_false_for_non_575_pattern(self, mock_estimate):
         mock_estimate.side_effect = [4, 7, 5]
         haiku = 'first line\nsecond line\nthird line'
-
         self.assertFalse(validate_haiku(haiku))
 
 
@@ -60,7 +58,6 @@ class FiveSevenFiveViewTests(TestCase):
 
     def test_index_page_loads(self):
         response = self.client.get(reverse('five_seven_five_app:index'))
-
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'An old silent pond')
 
@@ -68,13 +65,15 @@ class FiveSevenFiveViewTests(TestCase):
         response = self.client.get(
             reverse('five_seven_five_app:profile', args=[self.user.username])
         )
-
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.user.username)
 
     def test_register_page_loads(self):
         response = self.client.get(reverse('five_seven_five_app:register'))
+        self.assertEqual(response.status_code, 200)
 
+    def test_login_page_loads(self):
+        response = self.client.get(reverse('five_seven_five_app:login'))
         self.assertEqual(response.status_code, 200)
 
     def test_search_page_loads(self):
@@ -82,15 +81,73 @@ class FiveSevenFiveViewTests(TestCase):
             reverse('five_seven_five_app:search'),
             {'q': 'silent'}
         )
-
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'silent')
 
+    def test_search_page_handles_no_results(self):
+        response = self.client.get(
+            reverse('five_seven_five_app:search'),
+            {'q': 'doesnotexist'}
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_post_haiku_requires_login(self):
         response = self.client.get(reverse('five_seven_five_app:post_haiku'))
-
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('five_seven_five_app:login'), response.url)
+
+    @patch('five_seven_five_app.forms.syllables.estimate')
+    def test_logged_in_user_can_post_valid_haiku(self, mock_estimate):
+        mock_estimate.side_effect = [5, 7, 5]
+        self.client.login(username='alice', password='testpass123')
+
+        haiku_count_before = Haiku.objects.count()
+
+        response = self.client.post(
+            reverse('five_seven_five_app:post_haiku'),
+            {
+                'haiku': 'first line\nsecond line here\nthird line',
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Haiku.objects.count(), haiku_count_before + 1)
+        self.assertTrue(
+            Haiku.objects.filter(
+                username=self.profile,
+                haiku='first line\nsecond line here\nthird line'
+            ).exists()
+        )
+
+    def test_edit_profile_requires_login(self):
+        response = self.client.get(reverse('five_seven_five_app:edit_profile'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('five_seven_five_app:login'), response.url)
+
+    def test_logged_in_user_can_open_edit_profile_page(self):
+        self.client.login(username='alice', password='testpass123')
+        response = self.client.get(reverse('five_seven_five_app:edit_profile'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_logged_in_user_can_update_bio(self):
+        self.client.login(username='alice', password='testpass123')
+
+        response = self.client.post(
+            reverse('five_seven_five_app:edit_profile'),
+            {
+                'bio': 'Updated bio text',
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.bio, 'Updated bio text')
+
+    def test_toggle_like_requires_login(self):
+        response = self.client.post(
+            reverse('five_seven_five_app:toggle_like', args=[self.haiku.id])
+        )
+        self.assertEqual(response.status_code, 302)
 
     def test_logged_in_user_can_like_a_haiku(self):
         self.client.login(username='alice', password='testpass123')
@@ -125,6 +182,12 @@ class FiveSevenFiveViewTests(TestCase):
         self.assertEqual(response.json()['liked'], False)
         self.assertEqual(response.json()['like_count'], 0)
 
+    def test_toggle_follow_requires_login(self):
+        response = self.client.post(
+            reverse('five_seven_five_app:toggle_follow', args=[self.other_user.username])
+        )
+        self.assertEqual(response.status_code, 302)
+
     def test_logged_in_user_can_follow_another_user(self):
         self.client.login(username='alice', password='testpass123')
 
@@ -153,7 +216,6 @@ class FiveSevenFiveViewTests(TestCase):
 
     def test_following_page_requires_login(self):
         response = self.client.get(reverse('five_seven_five_app:following'))
-
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('five_seven_five_app:login'), response.url)
 
@@ -178,7 +240,6 @@ class FiveSevenFiveViewTests(TestCase):
 
     def test_liked_page_requires_login(self):
         response = self.client.get(reverse('five_seven_five_app:liked'))
-
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('five_seven_five_app:login'), response.url)
 
@@ -216,6 +277,5 @@ class FiveSevenFiveViewTests(TestCase):
         response = self.client.get(
             reverse('five_seven_five_app:haiku_detail', args=[self.haiku.id])
         )
-
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'An old silent pond')
