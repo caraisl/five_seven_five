@@ -251,7 +251,7 @@ body {
     box-sizing: border-box;
 }
 
-.auth-page button,
+.auth-page button,.greyBtn,
 #haikuSubmit {
     background-color: #5a5a5a;
     color: white;
@@ -259,9 +259,11 @@ body {
     border-radius: 6px;
     padding: 10px 16px;
     cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
 }
 
-.auth-page button:hover,
+.auth-page button:hover,.greyBtn:hover,
 #haikuSubmit:hover {
     background-color: #444;
 }

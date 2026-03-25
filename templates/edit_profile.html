@@ -13,7 +13,8 @@ Edit Profile
     <form method="post" enctype="multipart/form-data" id="haikuPost">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" id="haikuSubmit">Edit Profile</button>
+        <button type="submit" id="haikuSubmit">Save Changes</button>
+        <a href="{% url 'five_seven_five_app:index' %}" class="greyBtn">Discard Changes</a>
     </form>
 </div>
 {% endblock %}

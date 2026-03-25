@@ -106,14 +106,12 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            profile = profile_form.save(commit=False)
-            profile.username = user
+            profile = Profile.objects.create(username = user, created_at = datetime.date.today())
             # Because the created_at in models.py don't have the auto_now_add attribute set, manually fill here
-            profile.created_at = datetime.date.today()
             profile.save()
 
             login(request, user)
-            return redirect('five_seven_five_app:index')
+            return redirect('five_seven_five_app:edit_profile')
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
