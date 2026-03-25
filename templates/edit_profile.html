@@ -6,11 +6,14 @@ Edit Profile
 {% endblock %}
 
 {% block body_block %}
-<h1> Edit Profile </h1>
+<div class="auth-page">
+    <h1> Edit Profile </h1>
+    <p>Update your bio or profile picture.</p>
 
-<form method="post" enctype="multipart/form-data" id="haikuPost">
+    <form method="post" enctype="multipart/form-data" id="haikuPost">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" id="haikuSubmit">Edit Profile</button>
     </form>
+</div>
 {% endblock %}

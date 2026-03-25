@@ -23,10 +23,19 @@
                     <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}&type=haiku" class="filter-btn">See more Haikus</a>
                 {% endif %}
             </div>
-            {% if haiku_count == 0 %}
-            <p>No haikus found.</p>
-            {% endif %}
-         {% endif %}
+            
+            <div class="haiku-list">
+                {% for haiku in haiku_results %}
+                    <div class="haiku-card">
+                        <p>{{ haiku.haiku }}</p>
+                        <small>by {{ haiku.username.username }}</small>
+                    </div>
+                {% empty %}
+                    <p>No haikus found.</p>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
 {% endblock %}
        

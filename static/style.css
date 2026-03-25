@@ -1,130 +1,336 @@
 body {
+    margin: 0;
     padding: 0;
-    margin:0;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+    color: #222;
 }
 
-
-
-
-#navbar{
-    list-style: none;
-    background-color: deeppink;
-    height: fit-content; 
+#navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #cfcfcf;
+    padding: 0 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-#navbar ul li{
-    list-style: none; 
+.nav-left {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-center {
+    margin: 0 auto;
+}
+
+.nav-right {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-center form {
+    display: flex;
+    gap: 6px;
 }
 
 #navbar ul {
-    display:flex;
-    margin: 0;
-}
-
-#navbar ul li{
-    padding: 15px;
-}
-
-#navbar ul li a{
-    text-decoration: none;
-    color: white;
-}
-
-#navbar ul li:hover{
-    background-color:mediumvioletred;
-}
-
-#navbar ul li input{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-#navbar ul li button{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 0.5em;
-    border-radius: 0.5em;
-}
-
-
-.haikuCard {
-    background-color: lightpink;
-    margin:1em;
-    border-radius: 1.5em;
-    text-decoration: none;
-    color:black;
-}
-
-
-
-.haikuCard a{
-    text-decoration: none;
-    color:black;
-    
-}
-
-.profileImg{
-    width: 3em;
-    height:3em;
-    margin:1em;
-    border-radius: 0.5em;
-}
-
-.haikuCard h1{
-    margin-right: 1em;
-}
-
-.haikuCard pre{
-    margin: 1em;
-}
-
-.usernameCont{
     display: flex;
     align-items: center;
-    height: fit-content;
-
-}
-
-.profileButton{
-    background-color: deeppink;
-    border-radius: 0.5em;
-    padding:0.5em;
-    margin:1em;
-    color:white;
-    text-decoration: none;
-
-}
-
-.usernameCont h1{
-    display: inline;
-    width:fit-content
-}
-
-#feedContainer{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#mainContent{
-    padding-left:8px;
-}
-
-#postButton{
-    padding:1em;
-    border-radius: 0.5em;
-    position:fixed;
-    bottom: 1em;
-    right:1em;
-}
-
-.errorlist li{
-    color: red;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 12px 0;
+    max-width: 1200px;
     list-style: none;
 }
 
-.errorlist {
-    padding-left:0;
+#navbar ul li {
+    list-style: none;
 }
 
+#navbar ul li a {
+    text-decoration: none;
+    color: #222;
+    padding: 8px 10px;
+    display: inline-block;
+}
+
+#navbar ul li:hover {
+    background-color: #f0f0f0;
+    border-radius: 6px;
+}
+
+#navbar form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#navbar input[type="text"] {
+    width: 300px;
+    padding: 8px 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+    background: white;
+}
+
+#navbar button,
+#postButton,
+.like-btn,
+.follow-btn {
+    background-color: #5a5a5a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#navbar button:hover,
+#postButton:hover,
+.like-btn:hover,
+.follow-btn:hover {
+    background-color: #444;
+}
+
+#mainContent {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 0 16px 40px;
+}
+
+#feedContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.haikuCard {
+    background-color: white;
+    border: 1px solid #bcbcbc;
+    border-radius: 24px;
+    width: 320px;
+    padding: 16px;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+.haikuCard a {
+    color: #222;
+    text-decoration: none;
+}
+
+.haikuCard:hover {
+    transform: translateY(-3px);
+}
+
+.usernameCont {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.profileImg {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    margin: 0;
+}
+
+.haikuCard h1 {
+    font-size: 22px;
+    margin: 0;
+}
+
+.haikuCard pre {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 18px;
+    line-height: 1.4;
+    margin: 12px 0;
+}
+
+.haikuCard img:not(.profileImg) {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin: 12px 0;
+}
+
+.card-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #444;
+}
+
+#postButton {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.form-page,
+.profile-header {
+    background: white;
+    border: 1px solid #c8c8c8;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.profile-header .profileImg {
+    width: 70px;
+    height: 70px;
+}
+
+.form-page input,
+.form-page textarea,
+.form-page select,
+.detail-page textarea {
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.errorlist {
+    padding-left: 0;
+    margin: 8px 0;
+}
+
+.errorlist li {
+    color: #c62828;
+    list-style: none;
+}
+
+.auth-page {
+    background: white;
+    border: 1px solid #c8c8c8;
+    border-radius: 18px;
+    padding: 24px;
+    max-width: 600px;
+    margin: 24px auto;
+}
+
+.auth-page h1 {
+    margin-top: 0;
+}
+
+.auth-page p {
+    line-height: 1.5;
+}
+
+.auth-page form p {
+    margin-bottom: 14px;
+}
+
+.auth-page input,
+.auth-page textarea,
+.auth-page select {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.auth-page button,
+#haikuSubmit {
+    background-color: #5a5a5a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.auth-page button:hover,
+#haikuSubmit:hover {
+    background-color: #444;
+}
+
+.form-error {
+    color: #c62828;
+    font-weight: bold;
+}
+
+.login-hint {
+    color: #555;
+}
+
+.detail-page {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.detail-left,
+.detail-right {
+    background: white;
+    border: 1px solid #c8c8c8;
+    border-radius: 18px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.detail-left {
+    flex: 2;
+}
+
+.detail-right {
+    flex: 1;
+}
+
+.detail-haiku-image {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    margin: 12px 0;
+    object-fit: cover;
+}
+
+.comment-card {
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #fafafa;
+}
+
+.comment-form-box,
+.login-prompt-box {
+    margin-top: 18px;
+    padding-top: 12px;
+}
+
+.comment-form-box input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+
+.like-btn, .follow-btn {
+    transition: 0.2s;
+}

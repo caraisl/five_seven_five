@@ -2,32 +2,38 @@
 {% load static %}
 
 {% block feed_desc %}
-<div class="usernameCont">
-<img src="{{ MEDIA_URL }}{{profile.profile_picture}}" class="profileImg">
-<h1>{{ profile.username }}</h1>
+<div class="profile-header">
+    <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" class="profileImg">
 
-    {% if user.is_authenticated %}
-        {% if profile.username.username == user.username %}
-        <p><a href="{% url 'five_seven_five_app:edit_profile' %}" class="profileButton">Edit Profile</a></p>
-        {% else %}
-        <button class="follow-btn profileButton"" data-profile-username="{{ profile.username }}">
-            
-        {% if is_following %}
-            Unfollow
-        {% else %}
-            Follow
+    <div>
+        <h1>{{ profile.username }}</h1>
+        <p>{{ profile.bio }}</p>
+
+        {% if user.is_authenticated %}
+            {% if profile.username.username == user.username %}
+                <p><a href="{% url 'five_seven_five_app:edit_profile' %}">Edit Profile</a></p>
+            {% else %}
+
+                <button class="follow-btn" data-profile-username="{{ profile.username.username }}">
+                    {% if is_following %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            {% endif %}
         {% endif %}
 
-        </button>
-        {% endif %}
-    {% endif %}
+        <p>
+            <span id="follower-count">{{ follower_count }}</span>
+            <span id="follower-label">
+                {% if follower_count == 1 %}
+                    Follower
+                {% else %}
+                    Followers
+                {% endif %}
+            </span>
+        </p>
     </div>
-    <p > <span id="follower-count">{{follower_count}}</span>
-    {% if follower_count == 1 %}
-         Follower
-    {% else %}
-          Followers
-    {% endif %}
-    </p>
-<p>{{ profile.bio }}</p>
+</div>
 {% endblock %}
