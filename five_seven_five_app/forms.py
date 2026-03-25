@@ -60,13 +60,16 @@ def validate_haiku(haiku):
 def count_syllables(haiku):
     lines = [line for line in haiku.split("\n")]
     words = [line.split(" ") for line in lines]
+    print(words)
     syllable_counts = [0,0,0]
     for i,line in enumerate(words):
         for word in line:
-            if syllables_dict.get(re.sub(r'[^A-Za-z\']','',word.lower())) != None:
-                for phoneme in syllables_dict.get(word.strip().lower())[0]:
+            cleaned_word = re.sub(r'[^A-Za-z\']','',word.lower())
+            print(cleaned_word)
+            if syllables_dict.get(cleaned_word) != None:
+                for phoneme in syllables_dict.get(cleaned_word)[0]:
                     if phoneme[:2] in vowels:
                         syllable_counts[i] += 1
-            else:
-                syllable_counts[i] += syllables.estimate(re.sub(r'[^A-Za-z\']','',word.lower()))
+            elif cleaned_word != "":
+                syllable_counts[i] += syllables.estimate(cleaned_word)
     return syllable_counts
