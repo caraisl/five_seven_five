@@ -27,7 +27,7 @@
                 {% for haiku in haiku_results %}
                     <div class="haiku-card">
                         <p>{{ haiku.haiku }}</p>
-                        <small>by {{ haiku.username.username.username }}</small>
+                        <small>by {{ haiku.username.username }}</small>
                     </div>
                 {% empty %}
                     <p>No haikus found.</p>
