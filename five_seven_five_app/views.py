@@ -6,7 +6,6 @@ from .forms import UserForm, ProfileForm, HaikuForm
 import datetime
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
-import syllables
 # Create your views here.
 
 from .models import Haiku, Profile, Comment, Like, Follow, User
@@ -95,7 +94,7 @@ def following_feed(request):
     following = Follow.objects.filter(follower=user)
     users = [f.following for f in following]
 
-    haikus = Haiku.objects.filter(username__username__in=users)
+    haikus = Haiku.objects.filter(username__username__in=users).order_by('-created_at')
     context = feed(request, haikus)
 
     return render(request, 'following.html', context)
@@ -169,28 +168,30 @@ def user_logout(request):
 
 def search(request):
     query = request.GET.get('q', '')
-    search_type = request.GET.get('type', 'all') # Default to 'all'
-    
-    haikus = Haiku.objects.filter(haiku__icontains=query) if query else Haiku.objects.none()
-    users = Profile.objects.filter(username__username__icontains=query) if query else Profile.objects.none()
+    search_type = request.GET.get('type', 'all')  # Default to 'all'
+
+    haiku_qs = Haiku.objects.filter(haiku__icontains=query) if query else Haiku.objects.none()
+    user_qs = Profile.objects.filter(username__username__icontains=query) if query else Profile.objects.none()
+
+    context_dict = {
+        'query': query,
+        'search_type': search_type,
+        'haiku_count': haiku_qs.count(),
+        'user_count': user_qs.count(),
+    }
 
     if search_type == 'haiku':
         # Show only haiku
-        users = []
+        context_dict['haiku_results'] = haiku_qs
+        context_dict['user_results'] = []
     elif search_type == 'user':
         # View only users
-        haikus = []
+        context_dict['haiku_results'] = []
+        context_dict['user_results'] = user_qs
     else:
         # Display the first few (Wireframe concept)
-        haikus = haikus[:3]
-        users = users[:3]
-    context_dict = feed(request, haikus)
-    context_dict['users'] = users
-    context_dict['query'] = query
-    context_dict['search_type'] = search_type
-    context_dict['haiku_count'] = haikus.count()
-    context_dict['user_count'] = users.count()
-    
+        context_dict['haiku_results'] = haiku_qs[:3]
+        context_dict['user_results'] = user_qs[:3]
 
     return render(request, 'search_results.html', context_dict)
 
