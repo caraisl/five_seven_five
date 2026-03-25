@@ -101,7 +101,7 @@ class FiveSevenFiveViewTests(TestCase):
         mock_estimate.side_effect = [5, 7, 5]
         self.client.login(username='alice', password='testpass123')
 
-        haiku_count_before = Haiku.objects.count()
+        count_before = Haiku.objects.count()
 
         response = self.client.post(
             reverse('five_seven_five_app:post_haiku'),
@@ -111,7 +111,7 @@ class FiveSevenFiveViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(Haiku.objects.count(), haiku_count_before + 1)
+        self.assertEqual(Haiku.objects.count(), count_before + 1)
         self.assertTrue(
             Haiku.objects.filter(
                 username=self.profile,
@@ -142,6 +142,9 @@ class FiveSevenFiveViewTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.profile.refresh_from_db()
         self.assertEqual(self.profile.bio, 'Updated bio text')
+
+    def test_profile_has_default_picture_path(self):
+        self.assertTrue(self.profile.profile_picture.name)
 
     def test_toggle_like_requires_login(self):
         response = self.client.post(
