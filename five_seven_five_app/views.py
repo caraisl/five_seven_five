@@ -168,30 +168,37 @@ def user_logout(request):
 
 def search(request):
     query = request.GET.get('q', '')
-    search_type = request.GET.get('type', 'all')  # Default to 'all'
+    search_type = request.GET.get('type', 'all')
 
     haiku_qs = Haiku.objects.filter(haiku__icontains=query) if query else Haiku.objects.none()
     user_qs = Profile.objects.filter(username__username__icontains=query) if query else Profile.objects.none()
+
+    if search_type == 'haiku':
+        haiku_results = haiku_qs
+        user_results = []
+        haikus = haiku_results
+    elif search_type == 'user':
+        haiku_results = []
+        user_results = user_qs
+        haikus = []
+    else:
+        haiku_results = haiku_qs[:3]
+        user_results = user_qs[:3]
+        haikus = haiku_results
 
     context_dict = {
         'query': query,
         'search_type': search_type,
         'haiku_count': haiku_qs.count(),
         'user_count': user_qs.count(),
+        'haiku_results': haiku_results,
+        'user_results': user_results,
     }
 
-    if search_type == 'haiku':
-        # Show only haiku
-        context_dict['haiku_results'] = haiku_qs
-        context_dict['user_results'] = []
-    elif search_type == 'user':
-        # View only users
-        context_dict['haiku_results'] = []
-        context_dict['user_results'] = user_qs
+    if haikus:
+        context_dict.update(feed(request, haikus))
     else:
-        # Display the first few (Wireframe concept)
-        context_dict['haiku_results'] = haiku_qs[:3]
-        context_dict['user_results'] = user_qs[:3]
+        context_dict['haikus'] = []
 
     return render(request, 'search_results.html', context_dict)
 
