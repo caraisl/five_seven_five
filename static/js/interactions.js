@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", function () {
             const haikuId = this.dataset.haikuId;
             const btn = this;
+            const likeIcon = this.getElementsByTagName('i')[0]
 
             fetch(`/haiku/${haikuId}/like/`, {
                 method: "POST",
@@ -14,8 +15,14 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(data => {
-                btn.textContent = data.liked ? "Unlike" : "Like";
                 document.getElementById(`like-count-${haikuId}`).textContent = data.like_count;
+                if (likeIcon.classList.contains("fa-solid")){
+                    likeIcon.classList.replace("fa-solid", "fa-regular");
+                }
+                else{
+                    likeIcon.classList.replace("fa-regular","fa-solid");
+                }
+                
             })
             .catch(error => console.error("Like toggle error:", error));
         });

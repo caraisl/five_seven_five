@@ -74,7 +74,6 @@ body {
 
 #navbar button,
 #postButton,
-.like-btn,
 .follow-btn {
     background-color: #5a5a5a;
     color: white;
@@ -85,9 +84,26 @@ body {
     font-size: 14px;
 }
 
+.like-btn{
+    color:deeppink;
+    border: none;
+    background: none;
+    padding: 8px 1px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+i{
+    padding: 5px;
+    font-size: 20px;
+}
+
+.like-btn:hover{
+    transform: translateY(-3px)
+}
+
 #navbar button:hover,
 #postButton:hover,
-.like-btn:hover,
 .follow-btn:hover {
     background-color: #444;
 }
@@ -170,7 +186,8 @@ body {
 
 .card-meta {
     display: flex;
-    gap: 18px;
+    gap:18px;
+    justify-content: flex-start;
     align-items: center;
     margin-top: 12px;
     font-size: 15px;
@@ -178,6 +195,8 @@ body {
 }
 
 #postButton {
+    display: flex;
+    align-items: center;
     position: fixed;
     right: 24px;
     bottom: 24px;
