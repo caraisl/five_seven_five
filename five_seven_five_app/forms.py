@@ -38,12 +38,29 @@ class HaikuForm(forms.ModelForm):
         value = self.cleaned_data["haiku"]
         if not validate_haiku(value):
             raise ValidationError(
-                "Not a haiku. Please check your syllables.",
+                f"Not a haiku - syllables are {','.join([str(i) for i in syllables])}. Please check your syllables.",
                 code="invalid",
             )
         return value
 
-
 def validate_haiku(haiku):
-    syllable_count = [syllables.estimate(line) for line in haiku.split("\n")]
-    return syllable_count == [5, 7, 5]
+    syllable_counts = count_syllables(haiku)
+    return syllable_counts == [5, 7, 5]
+
+
+def count_syllables(haiku):
+    lines = [line for line in haiku.split("\n")]
+    words = [line.split(" ") for line in lines]
+    print(words)
+    syllable_counts = [0,0,0]
+    for i,line in enumerate(words):
+        for word in line:
+            cleaned_word = re.sub(r'[^A-Za-z\']','',word.lower())
+            print(cleaned_word)
+            if syllables_dict.get(cleaned_word) != None:
+                for phoneme in syllables_dict.get(cleaned_word)[0]:
+                    if phoneme[:2] in vowels:
+                        syllable_counts[i] += 1
+            elif cleaned_word != "":
+                syllable_counts[i] += syllables.estimate(cleaned_word)
+    return syllable_counts
