@@ -28,7 +28,7 @@ SECRET_KEY = 'z_t-$*m%rt3+*^a)kwo+zp*a)tsv-@&-wl!ibm8$p3-!-$%p7='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['caraisl.pythonanywhere.com']
 
 
 # Application definition
