@@ -45,7 +45,7 @@ def populate():
         newUser.save()
 
         if created:
-            with open("populate_pics/" + user.get('profile_pic','default_pic.png'), 'rb') as f:
+            with open("populate_pics" + user.get('profile_pic','default.png'), 'rb') as f:
                 profile_pic = File(f)
                 newProfile = Profile.objects.get_or_create(username=newUser, profile_picture =  profile_pic, bio = user.get('bio', 'I like Haikus'), created_at = user['created'])[0]
                 newProfile.save()
