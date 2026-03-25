@@ -41,11 +41,13 @@ def populate():
     for user in users:
         print(user)
         newUser, created = User.objects.get_or_create(username=user['username'])
+        print(created)
         newUser.set_password(user['password'])
         newUser.save()
 
         if created:
-            with open(os.join("populate_pics", user.get('profile_pic','default.png')), 'rb') as f:
+            print(os.path.join("populate_pics", user.get('profile_pic','default.png')))
+            with open(os.path.join("populate_pics", user.get('profile_pic','default.png')), 'rb') as f:
                 profile_pic = File(f)
                 newProfile = Profile.objects.get_or_create(username=newUser, profile_picture =  profile_pic, bio = user.get('bio', 'I like Haikus'), created_at = user['created'])[0]
                 newProfile.save()
@@ -54,6 +56,7 @@ def populate():
 
     for haiku in haikus:
         print(haiku)
+        print(Profile.objects.all())
         newHaiku = Haiku.objects.get_or_create(username=Profile.objects.get(username__username=haiku['username']), haiku=haiku['haiku'], created_at = haiku.get('created', datetime.now()))[0]
         newHaiku.save()
         for comment in haiku.get("comments", []):
