@@ -22,18 +22,18 @@ def populate():
     ]
 
     haikus = [
-        {"username":"haikuUser1", "haiku": "Here's five syllables, \n Here is seven syllables, \n Here is five again", },
-        {"username":"Dave67", "haiku": "one two three four five, \n seven has two syllables,\n one two three four five", },
-        {"username":"IheartHaikus", "haiku": "I don't like Haikus, \n petition to ban haikus, \n they make me feel sad ", },
-        {"username":"IheartHaikus", "haiku": "I've changed my mind now, \n Haikus are extremely cool, \n they bring me such joy ", },
+        {"username":"haikuUser1", "haiku": "Here's five syllables,\nHere is seven syllables,\nHere is five again", },
+        {"username":"Dave67", "haiku": "one two three four five,\nseven has two syllables,\none two three four five", },
+        {"username":"IheartHaikus", "haiku": "I don't like Haikus,\npetition to ban haikus,\nthey make me feel sad ", },
+        {"username":"IheartHaikus", "haiku": "I've changed my mind now,\nHaikus are extremely cool,\nthey bring me such joy ", },
         {"username":"myFlatmateHolly",
-         "haiku": "I can do Haiku, \n better than you can do it, \n watch me do it now", 
+         "haiku": "I can do Haiku,\nbetter than you can do it,\nwatch me do it now", 
          "likes":["haikuUser1", "haikuUser2"] ,
          "comments":{"haikuUser1":"very nice Haiku Holly"}},
-        {"username":"haikuHater666", "haiku": "boo boo boo boo boo \n, I hate Haikus so so much \n, this haiku site sucks",},
-        {"username":"xxep1cF4res123xx", 'haiku': "Stanley speaks once more, \n diction dry like the desert, \n must i endure more"},
-        {"username":"StanielTheAntiFares","haiku":"He crashes servers, \n Fares does cyberwarfare, \n He shouldn't do that"},
-        {"username":"xxep1cF4res123xx", 'haiku': "It takes bravery \n to write something so dreadful \n and to then hit send", "comments":{'xxep1cF4res123xx':"This one's for you stanley."}}
+        {"username":"haikuHater666", "haiku": "boo boo boo boo boo,\nI hate Haikus so so much \n, this haiku site sucks",},
+        {"username":"xxep1cF4res123xx", 'haiku': "Stanley speaks once more,\ndiction dry like the desert,\nmust i endure more"},
+        {"username":"StanielTheAntiFares","haiku":"He crashes servers,\nFares does cyberwarfare,\nHe shouldn't do that"},
+        {"username":"xxep1cF4res123xx", 'haiku': "It takes bravery\nto write something so dreadful\nand to then hit send", "comments":{'xxep1cF4res123xx':"This one's for you stanley."}}
     ]
 
     follows = {"StanielTheAntiFares":["xxep1cF4res123xx", "myFlatmateHolly", "haikuHater666"], "myFlatmateHolly": ["IheartHaikus","Dave67"]}
