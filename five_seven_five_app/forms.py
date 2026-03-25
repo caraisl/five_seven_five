@@ -68,5 +68,5 @@ def count_syllables(haiku):
                     if phoneme[:2] in vowels:
                         syllable_counts[i] += 1
             else:
-                syllable_counts[i] += syllables.estimate(word)
+                syllable_counts[i] += syllables.estimate(re.sub(r'[^\w\s\']','',word.lower()))
     return syllable_counts
