@@ -1,10 +1,16 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+import re
 
 import syllables
+import cmudict
 
 from .models import Profile, Haiku
+
+syllables_dict = cmudict.dict()
+phonemes = cmudict.phones()
+vowels = [sound[0] for sound in cmudict.phones() if sound[1][0] == "vowel"]
 
 
 class UserForm(forms.ModelForm):
@@ -35,14 +41,15 @@ class HaikuForm(forms.ModelForm):
         fields = ('haiku', 'haiku_picture')
 
     def clean_haiku(self):
-        value = self.cleaned_data["haiku"]
-        if not validate_haiku(value):
+        haiku = self.cleaned_data["haiku"]
+        if not validate_haiku(haiku):
+            syllables = count_syllables(haiku)
             raise ValidationError(
                 f"Not a haiku - syllables are {','.join([str(i) for i in syllables])}. Please check your syllables.",
                 code="invalid",
             )
-        return value
-
+        return haiku
+    
 def validate_haiku(haiku):
     syllable_counts = count_syllables(haiku)
     return syllable_counts == [5, 7, 5]
