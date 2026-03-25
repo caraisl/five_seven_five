@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from .forms import UserForm, ProfileForm, HaikuForm
 import datetime
 from django.utils import timezone
@@ -12,11 +13,14 @@ from .models import Haiku, Profile, Comment, Like, Follow, User
 
 
 def index(request):
-    haikus = Haiku.objects.all().order_by('-created_at')
+    haikus = Haiku.objects.annotate(
+        popularity=Count('like', distinct=True)
+    ).order_by('-popularity', '-created_at')
 
     context = feed(request, haikus)
 
     return render(request, 'index.html', context)
+
 
 def feed(request, haikus):
     context = {}
@@ -32,9 +36,6 @@ def feed(request, haikus):
             haiku.is_liked = False
     context['haikus'] = haikus
     return context
-
-    
-
 
 
 def haiku_detail(request, haiku_id):
@@ -95,6 +96,7 @@ def following_feed(request):
 
     return render(request, 'following.html', context)
 
+
 def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -106,12 +108,14 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            profile = Profile.objects.create(username = user, created_at = datetime.date.today())
+            profile = profile_form.save(commit=False)
+            profile.username = user
             # Because the created_at in models.py don't have the auto_now_add attribute set, manually fill here
+            profile.created_at = datetime.date.today()
             profile.save()
 
             login(request, user)
-            return redirect('five_seven_five_app:edit_profile')
+            return redirect('five_seven_five_app:index')
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
@@ -120,6 +124,7 @@ def register(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -151,39 +156,42 @@ def user_login(request):
     next_url = request.GET.get('next', '')
     return render(request, 'login.html', {'next': next_url})
 
+
 @login_required
 def user_logout(request):
     logout(request)
     return redirect('five_seven_five_app:index')
 
+
 def search(request):
     query = request.GET.get('q', '')
-    search_type = request.GET.get('type', 'all') # Default to 'all'
-    
-    haikus = Haiku.objects.filter(haiku__icontains=query) if query else Haiku.objects.none()
-    users = Profile.objects.filter(username__username__icontains=query) if query else Profile.objects.none()
+    search_type = request.GET.get('type', 'all')  # Default to 'all'
+
+    haiku_qs = Haiku.objects.filter(haiku__icontains=query) if query else Haiku.objects.none()
+    user_qs = Profile.objects.filter(username__username__icontains=query) if query else Profile.objects.none()
+
+    context_dict = {
+        'query': query,
+        'search_type': search_type,
+        'haiku_count': haiku_qs.count(),
+        'user_count': user_qs.count(),
+    }
 
     if search_type == 'haiku':
         # Show only haiku
-        users = []
+        context_dict['haiku_results'] = haiku_qs
+        context_dict['user_results'] = []
     elif search_type == 'user':
         # View only users
-        haikus = []
+        context_dict['haiku_results'] = []
+        context_dict['user_results'] = user_qs
     else:
         # Display the first few (Wireframe concept)
-        haikus = haikus[:3]
-        users = users[:3]
-    context_dict = feed(request, haikus)
-    context_dict['users'] = users
-    context_dict['query'] = query
-    context_dict['search_type'] = search_type
-    context_dict['haiku_count'] = haikus.count(),
-    context_dict['query'] = users.count()
-    
+        context_dict['haiku_results'] = haiku_qs[:3]
+        context_dict['user_results'] = user_qs[:3]
 
     return render(request, 'search_results.html', context_dict)
 
-    
 
 @login_required
 def add_comment(request, haiku_id):
@@ -220,6 +228,7 @@ def post_haiku(request):
 
     return render(request, 'post_haiku.html', {'form': form})
 
+
 @login_required
 def toggle_like(request, haiku_id):
     if request.method != "POST":
@@ -247,7 +256,8 @@ def toggle_like(request, haiku_id):
         "like_count": like_count
     })
 
-@login_required 
+
+@login_required
 def edit_profile(request):
     user_profile = get_object_or_404(Profile, username=request.user)
 
@@ -258,14 +268,14 @@ def edit_profile(request):
                 user_profile.bio = form.cleaned_data['bio']
             if form.cleaned_data['profile_picture'] != None:
                 user_profile.profile_picture = form.cleaned_data['profile_picture']
-            
+
             user_profile.save()
             return redirect('five_seven_five_app:profile', username=user_profile.username.username)
     else:
         form = ProfileForm()
-        
 
     return render(request, 'edit_profile.html', {'form': form})
+
 
 @login_required
 def toggle_follow(request, username):
