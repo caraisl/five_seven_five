@@ -105,15 +105,21 @@ def register(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-            # Hashes the password
-            user.set_password(user.password)
-            user.save()
 
-            profile = Profile.objects.create(username = user, created_at = datetime.date.today())
-            # Because the created_at in models.py don't have the auto_now_add attribute set, manually fill here
-            profile.save()
+            profile = Profile.objects.create(
+                username=user,
+                created_at=datetime.date.today()
+            )
 
-            login(request, user)
+            raw_password = user_form.cleaned_data.get('password1')
+            authenticated_user = authenticate(
+                username=user.username,
+                password=raw_password
+            )
+
+            if authenticated_user is not None:
+                login(request, authenticated_user)
+
             return redirect('five_seven_five_app:edit_profile')
     else:
         user_form = UserCreationForm()
