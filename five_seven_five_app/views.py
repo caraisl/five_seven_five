@@ -2,10 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from .forms import UserForm, ProfileForm, HaikuForm
+from .forms import ProfileForm, HaikuForm
 import datetime
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 from .models import Haiku, Profile, Comment, Like, Follow, User
@@ -99,7 +100,7 @@ def following_feed(request):
 
 def register(request):
     if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
+        user_form = UserCreationForm(data=request.POST)
         profile_form = ProfileForm(data=request.POST, files=request.FILES)
 
         if user_form.is_valid() and profile_form.is_valid():
@@ -108,22 +109,21 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            profile = profile_form.save(commit=False)
-            profile.username = user
+            profile = Profile.objects.create(username = user, created_at = datetime.date.today())
             # Because the created_at in models.py don't have the auto_now_add attribute set, manually fill here
-            profile.created_at = datetime.date.today()
             profile.save()
 
             login(request, user)
-            return redirect('five_seven_five_app:index')
+            return redirect('five_seven_five_app:edit_profile')
     else:
-        user_form = UserForm()
+        user_form = UserCreationForm()
         profile_form = ProfileForm()
 
     return render(request, 'register.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
+
 
 
 def user_login(request):

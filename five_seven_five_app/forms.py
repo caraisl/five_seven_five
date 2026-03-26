@@ -13,14 +13,6 @@ phonemes = cmudict.phones()
 vowels = [sound[0] for sound in cmudict.phones() if sound[1][0] == "vowel"]
 
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
-
-
 class ProfileForm(forms.ModelForm):
     bio = forms.CharField(
         widget=forms.Textarea(attrs={'style': "display:block;"}),
