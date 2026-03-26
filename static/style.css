@@ -505,12 +505,14 @@ h1, h2 {
 
     .nav-left,
     .nav-right {
+        order: 1;
         justify-content: center;
         flex-wrap: wrap;
     }
 
     .nav-center {
         margin: 0;
+        order:2;
     }
 
     #navbar input[type="text"] {
@@ -636,23 +638,6 @@ hr {
 }
 
 
-@media screen and (max-width:830px){
-    #navbar ul{
-    }
-
-    .nav-left, .nav-right{
-        order: 1;
-    }
-
-    .nav-center {
-        order: 3;
-        margin-left:8px;
-        margin-top: 10px;
-    }
-
-
-    
-}
 
 @media screen and (max-width:490px){
 
