@@ -3,8 +3,15 @@
 
 {% block body_block %}
 <div class="auth-page">
-    <h1>Log in to Five Seven Five</h1>
-    <p>Log in to your account to share haikus, like, comment and follow other users.</p>
+    <h1 class="form-title">Log In</h1>
+
+    <p class="form-subtitle">
+        Welcome back — continue your haiku journey
+    </p>
+    
+    <p class="login-desc">
+        Share your thoughts, like others, and connect through poetry.
+    </p>
 
     {% if error %}
         <p class="form-error">{{ error }}</p>

@@ -46,8 +46,7 @@
                                     ></i>
                                 </button>
                             {% else %}
-                                <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}"
-                                    class="login-link-inline">
+                                <a href="{% url 'five_seven_five_app:login' %}" class="auth-link">
                                     Log in to like <i class="fa-regular fa-heart"></i>
                                 </a>
                             {% endif %}

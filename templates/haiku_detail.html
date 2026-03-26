@@ -87,11 +87,11 @@
             <div class="login-prompt-box">
                 <p>You need to log in to comment on this haiku.</p>
                 <p>
-                    <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}">
+                    <a href="{% url 'five_seven_five_app:login' %}" class="auth-link">
                         Log in
                     </a>
                     or
-                    <a href="{% url 'five_seven_five_app:register' %}">
+                    <a href="{% url 'five_seven_five_app:register' %}" class="auth-link">
                         Register
                     </a>
                     instead.
