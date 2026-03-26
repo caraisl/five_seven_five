@@ -52,11 +52,8 @@ def haiku_detail(request, haiku_id):
 
 
 def profile(request, username):
-    user = get_object_or_404(Profile, username__username=username)
-
-    haikus = Haiku.objects.filter(username=user)
-
-    profile = Profile.objects.get(username=user)
+    profile = get_object_or_404(Profile, username__username=username)
+    haikus = Haiku.objects.filter(username=profile)
 
     follower_count = Follow.objects.filter(following=profile.username).count()
 
@@ -68,12 +65,12 @@ def profile(request, username):
     else:
         is_following = False
 
-    return render(request, 'profile.html', {
-        'profile': profile,
-        'haikus': haikus,
-        'follower_count': follower_count,
-        'is_following': is_following
-    })
+    context = feed(request, haikus)
+    context['profile'] = profile
+    context['follower_count'] = follower_count
+    context['is_following'] = is_following
+
+    return render(request, 'profile.html', context)
 
 
 @login_required
