@@ -15,7 +15,7 @@
                 {% endif %}
 
                 <div class="userMeta">
-                    <h1>{{ haiku.username }}</h1>
+                    <h1><a href="{% url 'five_seven_five_app:profile' haiku.username %}">{{ haiku.username }}</a></h1>
                     <div class="userSubMeta">
                         <span>{{ haiku.created_at }}</span>
                         <span class="metaDot">·</span>
