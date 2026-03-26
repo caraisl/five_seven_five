@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from .forms import ProfileForm, HaikuForm
 import datetime
+from datetime import timedelta
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
@@ -13,12 +14,20 @@ from .models import Haiku, Profile, Comment, Like, Follow, User
 
 
 def index(request):
-    haikus = Haiku.objects.annotate(
+    one_week_ago = timezone.now().date() - timedelta(days=7)
+
+    haikus = Haiku.objects.filter(
+        created_at__gte=one_week_ago
+    ).annotate(
         popularity=Count('like', distinct=True)
     ).order_by('-popularity', '-created_at')
 
-    context = feed(request, haikus)
+    if not haikus.exists():
+        haikus = Haiku.objects.annotate(
+            popularity=Count('like', distinct=True)
+        ).order_by('-popularity', '-created_at')
 
+    context = feed(request, haikus)
     return render(request, 'index.html', context)
 
 
@@ -40,9 +49,16 @@ def feed(request, haikus):
 
 def haiku_detail(request, haiku_id):
     haiku = get_object_or_404(Haiku, id=haiku_id)
-    comments = Comment.objects.filter(haiku=haiku)
+    comments = Comment.objects.filter(haiku=haiku).order_by('-id')
     haiku.like_count = Like.objects.filter(haiku=haiku).count()
     haiku.comment_count = Comment.objects.filter(haiku=haiku).count()
+    if request.user.is_authenticated:
+        haiku.is_liked = Like.objects.filter(
+            haiku=haiku,
+            username=request.user
+        ).exists()
+    else:
+        haiku.is_liked = False
     for comment in comments:
         comment.profile = Profile.objects.get(username = comment.username)
 
@@ -227,7 +243,7 @@ def add_comment(request, haiku_id):
                 return JsonResponse({
                     "success": True,
                     "comment_text": comment.comment_text,
-                    "created_at": str(comment.created_at),
+                    "created_at": comment.created_at.strftime("%B %d, %Y"),
                     "username": request.user.username,
                     "profile_picture": profile.profile_picture.url if profile.profile_picture else "",
                     "comment_count": Comment.objects.filter(haiku=haiku).count()

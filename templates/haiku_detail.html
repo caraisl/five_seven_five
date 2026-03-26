@@ -8,20 +8,28 @@
 {% block body_block %}
 <div class="detail-page">
      <div class="detail-left">
-         <div class="usernameCont">
-            {% if haiku.username.profile_picture %}
-                <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" alt="profile picture" width="100">
+        <div class="detail-content">
+            <div class="usernameCont">
+                {% if haiku.username.profile_picture %}
+                    <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" class="profileImg" alt="profile picture">
+                {% endif %}
+
+                <div class="userMeta">
+                    <h1>{{ haiku.username }}</h1>
+                    <div class="userSubMeta">
+                        <span>{{ haiku.created_at }}</span>
+                        <span class="metaDot">·</span>
+                        <span class="metaTag">Haiku</span>
+                    </div>
+                </div>
+            </div>
+
+            <pre>{{ haiku.haiku }}</pre>
+
+            {% if haiku.haiku_picture %}
+                <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" class="detail-haiku-image" alt="haiku image">
             {% endif %}
-            <h1>{{ haiku.username }}</h1>
         </div>
-
-        <pre>{{ haiku.haiku }}</pre>
-
-        {% if haiku.haiku_picture %}
-            <img src="{{ MEDIA_URL }}{{ haiku.haiku_picture }}" alt="haiku image" width="300">
-        {% endif %}
-
-        <p><strong>Created at:</strong> {{ haiku.created_at }}</p>
     </div>
 
     <div class="detail-right">
@@ -66,7 +74,7 @@
                             <strong>{{ comment.username.username }}</strong>
                         </div>
                         <p>{{ comment.comment_text }}</p>
-                        <small>{{ comment.created_at }}</small>
+                        <small>{{ comment.created_at|date:"F d, Y" }}</small>
                     </div>
             {% endfor %}
         {% else %}
