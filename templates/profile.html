@@ -3,34 +3,29 @@
 
 {% block feed_desc %}
 <div class="profile-header">
-    <div>
-        <div class="usernameCont">
-    <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" class="profileImg">
-
-    
-        <h1>{{ profile.username }}</h1>
-    
+    <div class="profile-info">
+        <div class="profile-top-row">
+            <div class="usernameCont">
+                <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" class="profileImg">
+                <h1>{{ profile.username }}</h1>
+            </div>
         
-
-        {% if user.is_authenticated %}
-            {% if profile.username.username == user.username %}
-                <p><a href="{% url 'five_seven_five_app:edit_profile' %}" class="greyBtn">Edit Profile</a></p>
-            {% else %}
-
-                <button class="follow-btn" data-profile-username="{{ profile.username.username }}">
-                    {% if is_following %}
-                        Unfollow
-                    {% else %}
-                        Follow
-                    {% endif %}
-                </button>
+            {% if user.is_authenticated %}
+                {% if profile.username.username == user.username %}
+                    <a href="{% url 'five_seven_five_app:edit_profile' %}" class="greyBtn profile-btn">Edit Profile</a>
+                {% else %}
+                    <button class="follow-btn profile-btn" data-profile-username="{{ profile.username.username }}">
+                        {% if is_following %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                {% endif %}
             {% endif %}
-        {% endif %}
         </div>
 
-        <p>{{ profile.bio }}</p>
-
-        <p>
+        <p class="profile-stats follower-tag">
             <span id="follower-count">{{ follower_count }}</span>
             <span id="follower-label">
                 {% if follower_count == 1 %}
@@ -40,6 +35,9 @@
                 {% endif %}
             </span>
         </p>
+
+        <p class="profile-bio">{{ profile.bio }}</p>
+
     </div>
 </div>
 {% endblock %}
