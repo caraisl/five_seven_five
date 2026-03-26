@@ -27,58 +27,60 @@
     <div class="detail-right">
         
         <div class="card-meta">
-                        {% if user.is_authenticated %}
-                            <span>
-                            <button class="like-btn" data-haiku-id="{{ haiku.id }}">
-                                <i
-                                {% if haiku.is_liked %}
-                                    class="fa-solid fa-heart"
-                                {% else %}
-                                    class="fa-regular fa-heart"
-                                {% endif %}
-                                ></i>
-                            </button>
+            <span>
+                {% if user.is_authenticated %}
+                    <button class="like-btn" data-haiku-id="{{ haiku.id }}">
+                        <i
+                        {% if haiku.is_liked %}
+                            class="fa-solid fa-heart"
                         {% else %}
-                            <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}"
-                               class="login-link-inline">
-                                Log in to like <i class="fa-regular fa-heart"></i>
-                            </a>
+                            class="fa-regular fa-heart"
                         {% endif %}
+                        ></i>
+                    </button>
+                {% else %}
+                    <a href="{% url 'five_seven_five_app:login' %}?next={% url 'five_seven_five_app:haiku_detail' haiku.id %}"
+                        class="login-link-inline">
+                        Log in to like <i class="fa-regular fa-heart"></i>
+                    </a>
+                {% endif %}
 
-                        <span id="like-count-{{ haiku.id }}">
-                            {{ haiku.like_count|default:0 }}
-                        </span>
-                        </span>
+                <span id="like-count-{{ haiku.id }}">
+                    {{ haiku.like_count|default:0 }}
+                </span>
+            </span>
 
-                        <span>
-                            <i class="fa-regular fa-comment"></i>{{ haiku.comment_count|default:0 }}
-                        </span>
-                    </div>
+            <span id="comment-count">
+                <i class="fa-regular fa-comment"></i>{{ haiku.comment_count|default:0 }}
+            </span>
+        </div>
         <h2>Comments</h2>
-        {% if comments %}
-            {% for comment in comments %}
-                <div class="comment-card">
-                    <div class="usernameCont">
-                        <img class="profileImg"
-                        src="{{ MEDIA_URL }}{{ comment.profile.profile_picture }}"
-                        alt="{{ comment.username.username }} profile picture">
-                    <strong>{{ comment.username.username }}</strong>
-                </div>
-                <p>{{ comment.comment_text }}</p>
-                <small>{{ comment.created_at }}</small>
-            </div>
-        {% endfor %}
+        <div id="comments-list">
+            {% if comments %}
+                {% for comment in comments %}
+                    <div class="comment-card">
+                        <div class="usernameCont">
+                            <img class="profileImg"
+                            src="{{ MEDIA_URL }}{{ comment.profile.profile_picture }}"
+                            alt="{{ comment.username.username }} profile picture">
+                            <strong>{{ comment.username.username }}</strong>
+                        </div>
+                        <p>{{ comment.comment_text }}</p>
+                        <small>{{ comment.created_at }}</small>
+                    </div>
+            {% endfor %}
         {% else %}
-            <p>No comments yet.</p>
+            <p id="no-comments-message">No comments yet.</p>
         {% endif %}
+    </div>
 
         {% if user.is_authenticated %}
             <div class="comment-form-box">
                 <h3>Add a comment</h3>
-                <form method="post" action="{% url 'five_seven_five_app:add_comment' haiku.id %}">
+                <form id="comment-form" method="post" action="{% url 'five_seven_five_app:add_comment' haiku.id %}">
                     {% csrf_token %}
-                    <input type="text" name="comment_text" placeholder="Write a comment" maxlength="100" required>
-                    <button type="submit" class="greyBtn">Post Comment</button>
+                    <input id="comment-input" type="text" name="comment_text" placeholder="Write a comment" maxlength="100" required>
+                    <button id="comment-submit" type="submit" class="greyBtn">Post Comment</button>
                 </form>
              </div>
         {% else %}

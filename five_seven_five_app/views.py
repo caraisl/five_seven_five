@@ -208,14 +208,27 @@ def add_comment(request, haiku_id):
         comment_text = request.POST.get("comment_text")
 
         if comment_text:
-            Comment.objects.create(
+            comment = Comment.objects.create(
                 username=request.user,
                 haiku=haiku,
                 comment_text=comment_text,
                 created_at=timezone.now().date()
             )
 
+            profile = Profile.objects.get(username=request.user)
+
+            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                return JsonResponse({
+                    "success": True,
+                    "comment_text": comment.comment_text,
+                    "created_at": str(comment.created_at),
+                    "username": request.user.username,
+                    "profile_picture": profile.profile_picture.url if profile.profile_picture else "",
+                    "comment_count": Comment.objects.filter(haiku=haiku).count()
+                })
+
     return redirect('five_seven_five_app:haiku_detail', haiku_id=haiku_id)
+    
 
 
 @login_required
