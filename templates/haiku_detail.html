@@ -71,7 +71,7 @@
                             <img class="profileImg"
                             src="{{ MEDIA_URL }}{{ comment.profile.profile_picture }}"
                             alt="{{ comment.username.username }} profile picture">
-                            <strong>{{ comment.username.username }}</strong>
+                            <strong><a href="{% url 'five_seven_five_app:profile' comment.username %}">{{ comment.username.username }}</a></strong>
                         </div>
                         <p>{{ comment.comment_text }}</p>
                         <small>{{ comment.created_at|date:"F d, Y" }}</small>
