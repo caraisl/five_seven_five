@@ -6,7 +6,9 @@
     <div class="profile-info">
         <div class="profile-top-row">
             <div class="usernameCont">
-                <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" class="profileImg">
+                {% if profile.profile_picture %}
+                    <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" class="profileImg" alt="profile picture">
+                {% endif %}
                 <h1>{{ profile.username }}</h1>
             </div>
         

@@ -16,8 +16,11 @@
             {% for haiku in haikus %}
                 <div class="haikuCard">
                     <div class="usernameCont">
-                        <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" class="profileImg" 
-                        alt="{{ haiku.username }} profile picture"/>
+                        {% if haiku.username.profile_picture %}
+                            <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}"
+                                class="profileImg"
+                                alt="{{ haiku.username }} profile picture"/>
+                        {% endif %}
 
                         <div class="userMeta">
                             <h1>
@@ -72,6 +75,7 @@
                 </div>
             {% endfor %}
         {% else %}
+            <p class="empty-state">No haikus to display yet.</p>
         {% endif %}
     </div>
 

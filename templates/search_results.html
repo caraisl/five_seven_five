@@ -8,9 +8,11 @@
         <p class="search-query">Results for "{{ query }}"</p>
 
         <div class="search-stats">
-            <p class="search-stats">{{ haiku_count }} haikus · {{ user_count }} users</p>
+            {{ haiku_count }} haikus · {{ user_count }} users
             {% if search_type != 'all' %}
-                <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" style="margin-left: 20px;">← Back to all results</a>
+                <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" class="back-results-link">
+                    Back to all results
+                </a>
             {% endif %}
         </div>
 
@@ -46,7 +48,9 @@
                 <div class="user-grid">
                     {% for profile in user_results %}
                         <div class="user-card">
-                            <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" width="40">
+                            {% if profile.profile_picture %}
+                                <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" width="40" alt="profile picture">
+                            {% endif %}
                             <a href="{% url 'five_seven_five_app:profile' profile.username.username %}">{{ profile.username.username }}</a>
                         </div>
                     {% empty %}
