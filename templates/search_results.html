@@ -6,11 +6,12 @@
     <div class="search-container">
         <h1 class="jp-title">Search Results</h1>
         <p class="search-query">Results for "{{ query }}"</p>
+        <p>{{search_type}}</p>
 
         <div class="search-stats">
             <p class="search-stats">{{ haiku_count }} haikus · {{ user_count }} users</p>
             {% if search_type != 'all' %}
-                <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" style="margin-left: 20px;">← Back to all results</a>
+                <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" class="greyBtn">← Back to all results</a>
             {% endif %}
         </div>
 
@@ -38,7 +39,7 @@
             <section class="result-section">
                 <div class="section-header">
                     <h2 class="jp-title">Users</h2>
-                    {% if search_type == 'all' and user_count > 5 %}
+                    {% if search_type == 'all' and user_count > 3 %}
                         <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}&type=user" class="filter-btn">See more Users</a>
                     {% endif %}
                 </div>

@@ -93,7 +93,9 @@ body {
 .follow-btn,
 .auth-page button,
 .greyBtn,
+.filter-btn,
 #haikuSubmit {
+    text-decoration: none;
     background: linear-gradient(145deg, #d6be84, #8c6a3b);
     color: #2f2418;
     border: 1px solid rgba(120, 95, 45, 0.5);
@@ -186,7 +188,10 @@ i{
     box-sizing: border-box;
     transition: 0.25s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    paddin
+}
+
+.section-header a{
+    margin-left: 18px;
 }
 
 .haikuCard a, .user-card a {
