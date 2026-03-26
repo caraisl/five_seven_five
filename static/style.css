@@ -398,3 +398,12 @@ pre{
         transform: translateY(0);
     }
 }
+
+.card-meta a {
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.card-meta a:hover {
+    transform: translateY(-3px);
+}

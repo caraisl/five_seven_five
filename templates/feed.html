@@ -57,9 +57,9 @@
                             </span>
                         </span>
 
-                        <span>
+                        <a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">
                             <i class="fa-regular fa-comment"></i>{{ haiku.comment_count|default:0 }}
-                        </span>
+                        </a>
                     </div>
                 </div>
             {% endfor %}
