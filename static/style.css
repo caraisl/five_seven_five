@@ -26,6 +26,7 @@ body {
 }
 
 .nav-center {
+    align-self: center;
     margin: 0 auto;
 }
 
@@ -39,6 +40,8 @@ body {
     gap: 6px;
 }
 
+
+
 #navbar ul {
     display: flex;
     flex-wrap:wrap;
@@ -46,9 +49,11 @@ body {
     justify-content: space-between;
     margin: 0 auto;
     padding: 12px 0;
-    max-width: 1200px;
     list-style: none;
+    max-width: 1200px;
 }
+
+
 
 #navbar ul li {
     list-style: none;
@@ -382,4 +387,36 @@ i{
 
 pre{
     font-family: Arial, Helvetica, sans-serif;
+}
+
+@media screen and (max-width:830px){
+    #navbar ul{
+    }
+
+    .nav-left, .nav-right{
+        order: 1;
+    }
+
+    .nav-center {
+        order: 3;
+        margin-left:8px;
+        margin-top: 10px;
+    }
+
+
+    
+}
+
+@media screen and (max-width:490px){
+
+    #navbar form {
+        align-items: flex-start;
+    }
+
+    #navbar input[type="text"]{
+        width:75%;
+    }
+
+    
+    
 }
