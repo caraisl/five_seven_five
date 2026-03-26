@@ -41,6 +41,7 @@ body {
 
 #navbar ul {
     display: flex;
+    flex-wrap:wrap;
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
@@ -118,7 +119,7 @@ i{
 #mainContent {
     max-width: 1200px;
     margin: 24px auto;
-    padding: 0 16px 40px;
+    padding: 5px 16px 40px;
     background-color: rgba(255, 255, 255, 0.80);
     border-radius: 20px;
 }
