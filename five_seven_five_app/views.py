@@ -49,7 +49,7 @@ def feed(request, haikus):
 
 def haiku_detail(request, haiku_id):
     haiku = get_object_or_404(Haiku, id=haiku_id)
-    comments = Comment.objects.filter(haiku=haiku)
+    comments = Comment.objects.filter(haiku=haiku).order_by('-id')
     haiku.like_count = Like.objects.filter(haiku=haiku).count()
     haiku.comment_count = Comment.objects.filter(haiku=haiku).count()
     for comment in comments:
@@ -236,7 +236,7 @@ def add_comment(request, haiku_id):
                 return JsonResponse({
                     "success": True,
                     "comment_text": comment.comment_text,
-                    "created_at": str(comment.created_at),
+                    "created_at": comment.created_at.strftime("%B %d, %Y"),
                     "username": request.user.username,
                     "profile_picture": profile.profile_picture.url if profile.profile_picture else "",
                     "comment_count": Comment.objects.filter(haiku=haiku).count()
