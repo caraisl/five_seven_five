@@ -75,7 +75,9 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p class="empty-state">No haikus to display yet.</p>
+            {% if emptyMessage %}
+                <p class="empty-state">{{emptyMessage}}</p>
+            {% endif %}
         {% endif %}
     </div>
 

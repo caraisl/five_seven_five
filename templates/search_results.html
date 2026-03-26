@@ -6,13 +6,22 @@
     <div class="search-container">
         <h1 class="jp-title">Search Results</h1>
         <p class="search-query">Results for "{{ query }}"</p>
-        <p>{{search_type}}</p>
 
         <div class="search-stats">
-            {{ haiku_count }} haikus · {{ user_count }} users
-            {% if search_type != 'all' %}
-                <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" class="greyBtn">← Back to all results</a>
+            <p>
+            {% if search_type != "user" %}
+            <span>{{ haiku_count }} haikus </span>
             {% endif %}
+            {% if search_type == "all" %}
+            <span>· </span>
+            {% endif %}
+            {% if search_type != "haiku" %}
+            <span>{{ user_count }} users </span>
+            {% endif %}
+            {% if search_type != 'all' %}
+                <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" class="back-results-link">← Back to all results</a>
+            {% endif %}
+        </p>
         </div>
 
         {% if search_type == 'all' or search_type == 'haiku' %}
@@ -47,10 +56,13 @@
                 <div class="user-grid">
                     {% for profile in user_results %}
                         <div class="user-card">
+                            <div class="usernameCont">
                             {% if profile.profile_picture %}
                                 <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" width="40" alt="profile picture">
                             {% endif %}
                             <a href="{% url 'five_seven_five_app:profile' profile.username.username %}">{{ profile.username.username }}</a>
+                            </div>
+                            <p>{{profile.bio}}</p>
                         </div>
                     {% empty %}
                         <p>No users found.</p>
