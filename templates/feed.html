@@ -18,12 +18,21 @@
                     <div class="usernameCont">
                         <img src="{{ MEDIA_URL }}{{ haiku.username.profile_picture }}" class="profileImg" 
                         alt="{{ haiku.username }} profile picture"/>
-                        <h1>
-                            <a href="{% url 'five_seven_five_app:profile' haiku.username %}">
+
+                        <div class="userMeta">
+                            <h1>
+                                <a href="{% url 'five_seven_five_app:profile' haiku.username %}">
                                 {{ haiku.username }}
                             </a>
                         </h1>
+
+                        <div class="userSubMeta">
+                            <span>{{ haiku.created_at }}</span>
+                            <span class="metaDot">·</span>
+                            <span class="metaTag">Haiku</span>
+                        </div>
                     </div>
+                </div>
 
                     <pre>
 <a href="{% url 'five_seven_five_app:haiku_detail' haiku.id %}">{{ haiku.haiku }}</a>

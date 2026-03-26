@@ -175,8 +175,8 @@ i{
     background-color: rgba(255, 250, 244, 0.92);
     border: 1px solid rgba(168, 145, 102, 0.35);
     border-radius: 24px;
-    width: 320px;
-    padding: 16px;
+    width: 340px;
+    padding: 18px;
     box-sizing: border-box;
     transition: 0.25s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -203,37 +203,63 @@ i{
 .usernameCont {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 8px;
 }
 
-.usernameCont h1 {
+.userMeta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.usernameCont h1,
+.usernameCont h1 a{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 600;
     margin: 0;
-    line-height: 1.1;
+    line-height: 1.2;
     color: #2f2418;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+}
+
+.userSubMeta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #8a7d6a;
+}
+
+.metaDot {
+    opacity: 0.7;
+}
+
+.metaTag {
+    background: rgba(168,145,102,0.14);
+    color: #7a5a2f;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 .profileImg {
-    width: 46px;
-    height: 46px;
+    width: 42px;
+    height: 42px;
     object-fit: cover;
     border: 1px solid rgba(168, 145, 102, 0.45);
     border-radius: 8px;
     margin: 0;
 }
 
-.haikuCard h1 {
-    font-size: 22px;
-    margin: 0;
-}
-
 .haikuCard pre {
     white-space: pre-wrap;
     font-family: "Noto Serif JP", serif;
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.5;
     margin: 14px 0 18px;
     color: #3f362d;
@@ -427,10 +453,6 @@ i{
     gap:20px;
 }
 
-pre{
-    font-family: inherit;
-}
-
 .fade-in {
     animation: fadeInUp 0.3s ease;
 }
@@ -467,11 +489,6 @@ h1, h2 {
     font-weight: 700;
     margin-bottom: 6px;
     text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-#mainContent p {
-    color: #5a5145;
-    font-size: 15px;
 }
 
 @media (max-width: 768px) {
@@ -578,24 +595,6 @@ hr {
     height: 1px;
     background: rgba(168, 145, 102, 0.3);
     margin: 24px 0;
-}
-
-.search-container p {
-    text-align: left !important;
-    margin-left: 0 !important;
-}
-
-.search-container p:first-of-type {
-    font-size: 14px;
-    color: #8a7d6a;
-    margin-top: 6px;
-    margin-bottom: 4px;
-}
-
-.search-container p:nth-of-type(2) {
-    font-size: 13px;
-    color: #a39582;
-    margin-bottom: 18px;
 }
 
 .search-container {
