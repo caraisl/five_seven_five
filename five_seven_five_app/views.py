@@ -321,7 +321,7 @@ def edit_profile(request):
     else:
         form = ProfileForm()
 
-    return render(request, 'edit_profile.html', {'form': form})
+    return render(request, 'edit_profile.html', {'form': form, 'profile':user_profile})
 
 
 @login_required

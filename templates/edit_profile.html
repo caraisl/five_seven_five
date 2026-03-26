@@ -14,7 +14,7 @@ Edit Profile
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" id="haikuSubmit">Save Changes</button>
-        <a href="{% url 'five_seven_five_app:index' %}" class="greyBtn">Discard Changes</a>
+        <a href="{% url 'five_seven_five_app:profile' profile %}" id="discard-btn"><strong>Discard Changes</strong></a>
     </form>
 </div>
 {% endblock %}

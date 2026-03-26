@@ -94,6 +94,7 @@ body {
 .auth-page button,
 .greyBtn,
 .filter-btn,
+#discard-btn,
 #haikuSubmit {
     text-decoration: none;
     background: linear-gradient(145deg, #d6be84, #8c6a3b);
@@ -115,6 +116,7 @@ body {
 .follow-btn::after,
 .auth-page button::after,
 .greyBtn::after,
+#discard-btn::after,
 #haikuSubmit::after {
     content: "";
     position: absolute;
@@ -147,6 +149,7 @@ i{
 .follow-btn:hover,
 .auth-page button:hover,
 .greyBtn:hover,
+#discard-btn:hover,
 #haikuSubmit:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0,0,0,0.2);
@@ -505,7 +508,7 @@ i{
 }
 
 #comment-submit,
-.comment-form-box .greyBtn {
+.comment-form-box {
     padding: 10px 16px;
     border-radius: 10px;
     font-size: 14px;
