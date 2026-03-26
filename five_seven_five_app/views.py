@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from .forms import ProfileForm, HaikuForm
 import datetime
+from datetime import timedelta
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
@@ -13,12 +14,20 @@ from .models import Haiku, Profile, Comment, Like, Follow, User
 
 
 def index(request):
-    haikus = Haiku.objects.annotate(
+    one_week_ago = timezone.now().date() - timedelta(days=7)
+
+    haikus = Haiku.objects.filter(
+        created_at__gte=one_week_ago
+    ).annotate(
         popularity=Count('like', distinct=True)
     ).order_by('-popularity', '-created_at')
 
-    context = feed(request, haikus)
+    if not haikus.exists():
+        haikus = Haiku.objects.annotate(
+            popularity=Count('like', distinct=True)
+        ).order_by('-popularity', '-created_at')
 
+    context = feed(request, haikus)
     return render(request, 'index.html', context)
 
 

@@ -61,6 +61,25 @@ class FiveSevenFiveViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'An old silent pond')
 
+    def test_index_shows_only_recent_haikus_when_recent_exist(self):
+        old_haiku = Haiku.objects.create(
+            username=self.profile,
+            haiku='Old haiku line one\nOld haiku line two here\nOld haiku line three',
+            created_at=datetime.date.today() - datetime.timedelta(days=10)
+        )
+
+        recent_haiku = Haiku.objects.create(
+            username=self.profile,
+            haiku='Fresh breeze softly blows\nMorning light touches the grass\nBirdsong fills the sky',
+            created_at=datetime.date.today()
+        )
+
+        response = self.client.get(reverse('five_seven_five_app:index'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, recent_haiku.haiku)
+        self.assertNotContains(response, old_haiku.haiku)
+
     def test_profile_page_loads(self):
         response = self.client.get(
             reverse('five_seven_five_app:profile', args=[self.user.username])
