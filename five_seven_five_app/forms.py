@@ -35,9 +35,9 @@ class HaikuForm(forms.ModelForm):
     def clean_haiku(self):
         haiku = self.cleaned_data["haiku"]
         if not validate_haiku(haiku):
-            syllables = count_syllables(haiku)
+            syllable_counts = count_syllables(haiku)
             raise ValidationError(
-                f"Not a haiku - syllables are {','.join([str(i) for i in syllables])}. Please check your syllables.",
+                f"Not a haiku - syllables are {','.join([str(i) for i in syllable_counts])}. Please check your syllables.",
                 code="invalid",
             )
         return haiku
@@ -48,18 +48,26 @@ def validate_haiku(haiku):
 
 
 def count_syllables(haiku):
-    lines = [line for line in haiku.split("\n")]
-    words = [line.split(" ") for line in lines]
-    print(words)
-    syllable_counts = [0,0,0]
-    for i,line in enumerate(words):
-        for word in line:
-            cleaned_word = re.sub(r'[^A-Za-z\']','',word.lower())
-            print(cleaned_word)
-            if syllables_dict.get(cleaned_word) != None:
+    lines = [line.strip() for line in haiku.splitlines() if line.strip()]
+
+    if len(lines) != 3:
+        return []
+
+    syllable_counts = [0, 0, 0]
+
+    for i, line in enumerate(lines):
+        words = line.split()
+
+        for word in words:
+            cleaned_word = re.sub(r"[^A-Za-z']", "", word.lower())
+
+            if not cleaned_word:
+                continue
+
+            if syllables_dict.get(cleaned_word) is not None:
                 for phoneme in syllables_dict.get(cleaned_word)[0]:
                     if phoneme[:2] in vowels:
                         syllable_counts[i] += 1
-            elif cleaned_word != "":
+            else:
                 syllable_counts[i] += syllables.estimate(cleaned_word)
     return syllable_counts

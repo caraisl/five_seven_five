@@ -10,15 +10,15 @@ from .models import Comment, Follow, Haiku, Like, Profile
 
 
 class HaikuValidationTests(TestCase):
-    @patch('five_seven_five_app.forms.syllables.estimate')
-    def test_validate_haiku_returns_true_for_575_pattern(self, mock_estimate):
-        mock_estimate.side_effect = [5, 7, 5]
+    @patch('five_seven_five_app.forms.count_syllables')
+    def test_validate_haiku_returns_true_for_575_pattern(self, mock_count_syllables):
+        mock_count_syllables.return_value = [5, 7, 5]
         haiku = 'first line\nsecond line\nthird line'
         self.assertTrue(validate_haiku(haiku))
 
-    @patch('five_seven_five_app.forms.syllables.estimate')
-    def test_validate_haiku_returns_false_for_non_575_pattern(self, mock_estimate):
-        mock_estimate.side_effect = [4, 7, 5]
+    @patch('five_seven_five_app.forms.count_syllables')
+    def test_validate_haiku_returns_false_for_non_575_pattern(self, mock_count_syllables):
+        mock_count_syllables.return_value = [4, 7, 5]
         haiku = 'first line\nsecond line\nthird line'
         self.assertFalse(validate_haiku(haiku))
 
@@ -96,9 +96,9 @@ class FiveSevenFiveViewTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('five_seven_five_app:login'), response.url)
 
-    @patch('five_seven_five_app.forms.syllables.estimate')
-    def test_logged_in_user_can_post_valid_haiku(self, mock_estimate):
-        mock_estimate.side_effect = [5, 7, 5]
+    @patch('five_seven_five_app.forms.count_syllables')
+    def test_logged_in_user_can_post_valid_haiku(self, mock_count_syllables):
+        mock_count_syllables.return_value = [5, 7, 5]
         self.client.login(username='alice', password='testpass123')
 
         count_before = Haiku.objects.count()

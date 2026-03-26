@@ -4,10 +4,11 @@
 
     {% block feed_desc %}
     <div class="search-container">
-        <h1>Search Results for "{{ query }}"</h1>
+        <h1 class="jp-title">Search Results</h1>
+        <p class="search-query">Results for "{{ query }}"</p>
 
         <div class="search-stats">
-            <span>Haikus: {{ haiku_count }} | Users: {{ user_count }}</span>
+            <p class="search-stats">{{ haiku_count }} haikus · {{ user_count }} users</p>
             {% if search_type != 'all' %}
                 <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}" style="margin-left: 20px;">← Back to all results</a>
             {% endif %}
@@ -16,7 +17,7 @@
         {% if search_type == 'all' or search_type == 'haiku' %}
         <section class="result-section">
             <div class="section-header">
-                <h2>Haikus</h2>
+                <h2 class="jp-title">Haikus</h2>
                 {% if search_type == 'all' and haiku_count > 3 %}
                     <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}&type=haiku" class="filter-btn">See more Haikus</a>
                 {% endif %}
@@ -36,7 +37,7 @@
             {% if search_type == 'all' or search_type == 'user' %}
             <section class="result-section">
                 <div class="section-header">
-                    <h2>Users</h2>
+                    <h2 class="jp-title">Users</h2>
                     {% if search_type == 'all' and user_count > 5 %}
                         <a href="{% url 'five_seven_five_app:search' %}?q={{ query }}&type=user" class="filter-btn">See more Users</a>
                     {% endif %}

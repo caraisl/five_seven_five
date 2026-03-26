@@ -3,8 +3,14 @@
 
 {% block body_block %}
 <div class="auth-page">
-    <h1>Register for Five Seven Five</h1>
-    <p>Create an account to share haikus, like, comment and follow other users.</p>
+    <h1 class="form-title">Register</h1>
+    <p class="form-subtitle">
+        Create an account to start sharing your haikus
+    </p>
+
+    <p class="login-desc">
+        Create an account to write, share, and connect through poetry.
+    </p>
 
     <form method="post" action="{% url 'five_seven_five_app:register' %}" enctype="multipart/form-data">
         {% csrf_token %}

@@ -105,15 +105,21 @@ def register(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-            # Hashes the password
-            user.set_password(user.password)
-            user.save()
 
-            profile = Profile.objects.create(username = user, created_at = datetime.date.today())
-            # Because the created_at in models.py don't have the auto_now_add attribute set, manually fill here
-            profile.save()
+            profile = Profile.objects.create(
+                username=user,
+                created_at=datetime.date.today()
+            )
 
-            login(request, user)
+            raw_password = user_form.cleaned_data.get('password1')
+            authenticated_user = authenticate(
+                username=user.username,
+                password=raw_password
+            )
+
+            if authenticated_user is not None:
+                login(request, authenticated_user)
+
             return redirect('five_seven_five_app:edit_profile')
     else:
         user_form = UserCreationForm()
@@ -208,14 +214,27 @@ def add_comment(request, haiku_id):
         comment_text = request.POST.get("comment_text")
 
         if comment_text:
-            Comment.objects.create(
+            comment = Comment.objects.create(
                 username=request.user,
                 haiku=haiku,
                 comment_text=comment_text,
                 created_at=timezone.now().date()
             )
 
+            profile = Profile.objects.get(username=request.user)
+
+            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                return JsonResponse({
+                    "success": True,
+                    "comment_text": comment.comment_text,
+                    "created_at": str(comment.created_at),
+                    "username": request.user.username,
+                    "profile_picture": profile.profile_picture.url if profile.profile_picture else "",
+                    "comment_count": Comment.objects.filter(haiku=haiku).count()
+                })
+
     return redirect('five_seven_five_app:haiku_detail', haiku_id=haiku_id)
+    
 
 
 @login_required
