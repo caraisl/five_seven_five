@@ -31,8 +31,10 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def feed(request, haikus):
+def feed(request, haikus, emptyMessage="No Haikus"):
     context = {}
+    if emptyMessage != "":
+        context['emptyMessage'] = emptyMessage
     for haiku in haikus:
         haiku.like_count = Like.objects.filter(haiku=haiku).count()
         haiku.comment_count = Comment.objects.filter(haiku=haiku).count()
@@ -196,14 +198,17 @@ def search(request):
         haiku_results = haiku_qs
         user_results = []
         haikus = haiku_results
+        emptyMessage = f"No haikus containing {query}"
     elif search_type == 'user':
         haiku_results = []
         user_results = user_qs
         haikus = []
+        emptyMessage = ""
     else:
         haiku_results = haiku_qs[:3]
         user_results = user_qs[:3]
         haikus = haiku_results
+        emptyMessage = f"No haikus containing {query}"
 
     context_dict = {
         'query': query,
@@ -215,7 +220,7 @@ def search(request):
     }
 
     if haikus:
-        context_dict.update(feed(request, haikus))
+        context_dict.update(feed(request, haikus,emptyMessage))
     else:
         context_dict['haikus'] = []
 
