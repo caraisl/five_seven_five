@@ -52,6 +52,13 @@ def haiku_detail(request, haiku_id):
     comments = Comment.objects.filter(haiku=haiku)
     haiku.like_count = Like.objects.filter(haiku=haiku).count()
     haiku.comment_count = Comment.objects.filter(haiku=haiku).count()
+    if request.user.is_authenticated:
+        haiku.is_liked = Like.objects.filter(
+            haiku=haiku,
+            username=request.user
+        ).exists()
+    else:
+        haiku.is_liked = False
     for comment in comments:
         comment.profile = Profile.objects.get(username = comment.username)
 
