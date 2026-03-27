@@ -81,11 +81,15 @@
         {% endif %}
     </div>
 
-    {% if user.is_authenticated %}
-        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku'%}"> <i class="fa-solid fa-pen-to-square" ></i> Post A Haiku</a>
-    {% endif %}
+    
 
     {% block afterFeed %}
     {% endblock %}
 
+{% endblock %}
+
+{% block post_block %}
+{% if user.is_authenticated %}
+        <a id="postButton" href="{% url 'five_seven_five_app:post_haiku'%}"> <i class="fa-solid fa-pen-to-square" ></i> Post A Haiku</a>
+{% endif %}
 {% endblock %}
